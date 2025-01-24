@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/23 22:13:21 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:13:19 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,19 @@
 #include <string.h>
 #include <sys/time.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+typedef enum
+{
+    false,
+    true    
+}   bool;
+
+typedef struct s_philo
+{
+    pthread_mutex_t *fork;
+    struct timeval start_time;
+}   t_philo;
 
 typedef struct s_info
 {
@@ -26,6 +39,7 @@ typedef struct s_info
     int time_to_sleep;
     int time_to_die;
     int num_of_meals;
+    t_philo *philo;
 }   t_info;
 
 
