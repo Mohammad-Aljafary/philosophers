@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/24 15:13:19 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/28 20:31:26 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,26 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-typedef enum
+typedef enum    e_bool
 {
     false,
     true    
 }   bool;
 
+typedef enum    e_state
+{
+    eating,
+    thinking,
+    sleeping
+}   state;
+
 typedef struct s_philo
 {
     pthread_mutex_t *fork;
-    struct timeval start_time;
+    pthread_t   *philos;
+    int count_down;
+    pthread_t   monitor;
+    bool    flag;
 }   t_philo;
 
 typedef struct s_info

@@ -5,7 +5,7 @@ CC = cc
 
 CFLAGS = -Wall -Werror -Wextra
 
-INCLUDES = -I../include/
+INCLUDES = -I./include/
 OBJ = obj
 OBJECTS = $(patsubst src/%.c, $(OBJ)/%.o, $(SRCS))  # Correct object path generation
 

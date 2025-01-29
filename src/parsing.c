@@ -6,11 +6,11 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:11:39 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/24 13:54:48 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/28 12:08:37 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include <philo.h>
 
 int	ft_atoi(char *str)
 {

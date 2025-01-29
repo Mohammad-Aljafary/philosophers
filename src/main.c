@@ -6,11 +6,11 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/24 15:11:09 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/28 12:08:26 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include <philo.h>
 
 bool    handle_minus(t_info *info, char **argv)
 {
@@ -23,7 +23,6 @@ bool    handle_minus(t_info *info, char **argv)
             return (false);
     return (true);
 }
-
 bool    init_mutex(t_info *info)
 {
     int i;
