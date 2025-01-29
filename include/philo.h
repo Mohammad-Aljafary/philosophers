@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/28 20:31:26 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:58:28 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,15 @@ typedef enum    e_state
 {
     eating,
     thinking,
-    sleeping
+    sleeping,
+    died
 }   state;
 
-typedef struct s_philo
+typedef enum    e_fork
 {
-    pthread_mutex_t *fork;
-    pthread_t   *philos;
-    int count_down;
-    pthread_t   monitor;
-    bool    flag;
-}   t_philo;
+    not_occupied,
+    occupied
+}   forks;
 
 typedef struct s_info
 {
@@ -49,9 +47,30 @@ typedef struct s_info
     int time_to_sleep;
     int time_to_die;
     int num_of_meals;
-    t_philo *philo;
+
 }   t_info;
 
+typedef struct s_philo
+{
+    pthread_t   philo;
+    int state;
+    int id;
+    struct s_philo *next;
+    struct s_philo *prev;
+    char    **argv;
+}   t_philo;
 
+typedef struct s_fork
+{
+    pthread_mutex_t *fork;
+    int *fork_status;
+}   t_fork;
+
+
+
+t_philo *new_node(int status, int id, char **argv);
+void    add_back(t_philo **lst, t_philo *node);
+void lst_clear(t_philo **lst);
 int	ft_atoi(char *str);
+void	*routine(void *arg);
 #endif
