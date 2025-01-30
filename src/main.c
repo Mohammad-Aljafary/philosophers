@@ -6,11 +6,13 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/29 14:25:30 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:47:14 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+pthread_mutex_t mutex;
+pthread_mutex_t mutex1;
 
 bool    handle_minus(t_info *info, char **argv)
 {
@@ -43,10 +45,12 @@ int main(int argc, char **argv)
     t_info  *info;
     t_philo *thread;
     t_philo *threads;
+    t_monitor   monitor;
     int i;
 
     i = 0;
-    threads = NULL;    
+    threads = NULL;
+    monitor.argv = argv;    
     info = malloc(sizeof(t_info));
     if (!info)  
         return (1);
@@ -70,9 +74,11 @@ int main(int argc, char **argv)
     }
     thread = threads;
     i = 0;
+    pthread_mutex_init(&mutex, NULL);
+    pthread_mutex_init(&mutex1, NULL);
     while (i < info->num_of_philo)
     {
-        if (pthread_create(&thread->philo, NULL, routine, threads) != 0)
+        if (pthread_create(&thread->philo, NULL, routine, thread) != 0)
         {
             write(2, "Error: Failed to create thread\n", 31);
             lst_clear(&threads);
@@ -82,7 +88,15 @@ int main(int argc, char **argv)
         thread = thread->next;
         i++;
     }
+    if (pthread_create(&monitor.monitor, NULL, monitor_check, threads) != 0)
+    {
+        write(2, "Error: Failed to create thread\n", 31);
+        lst_clear(&threads);
+        free(info);
+        return (1);
+    }
     lst_clear(&threads);
+    pthread_join(monitor.monitor, NULL);
     free(info);
     return (0);
 }
