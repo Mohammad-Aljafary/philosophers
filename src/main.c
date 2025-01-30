@@ -6,13 +6,11 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/30 09:47:14 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:40:17 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
-pthread_mutex_t mutex;
-pthread_mutex_t mutex1;
 
 bool    handle_minus(t_info *info, char **argv)
 {
@@ -46,6 +44,7 @@ int main(int argc, char **argv)
     t_philo *thread;
     t_philo *threads;
     t_monitor   monitor;
+    t_fork  *fork;
     int i;
 
     i = 0;
@@ -72,10 +71,21 @@ int main(int argc, char **argv)
         add_back(&threads, thread);
         i++;
     }
+    fork = malloc(sizeof(t_fork));
+    if (!fork)
+    {
+        lst_clear(&threads);
+        free(info);
+        return (1);
+    }
+    if (!init_mutex(&fork, info))
+    {
+        lst_clear(&threads);
+        free(info);
+        return (1);
+    }
     thread = threads;
     i = 0;
-    pthread_mutex_init(&mutex, NULL);
-    pthread_mutex_init(&mutex1, NULL);
     while (i < info->num_of_philo)
     {
         if (pthread_create(&thread->philo, NULL, routine, thread) != 0)

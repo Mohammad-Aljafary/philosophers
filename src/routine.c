@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/30 09:49:19 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:28:35 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,16 @@ void safe_printf(const char *msg)
 }
 
 void *monitor_check(void *arg)
-{
-    pthread_mutex_lock(&mutex1);   
+{  
     (void)arg;
-    safe_printf("hiiidsss");
-    pthread_mutex_unlock(&mutex1);
+    safe_printf("BOOMMM");
     return (NULL);
 }
 
 void *routine(void *arg)
 {
-    pthread_mutex_lock(&mutex);
     (void)arg;  
     safe_printf("hiiiiiii");
-    pthread_mutex_unlock(&mutex);
     return (NULL);
 }
 

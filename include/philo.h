@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/30 09:45:50 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:40:53 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_monitor
     char **argv;
 }   t_monitor;
 
-
 typedef struct s_philo
 {
     pthread_t   philo;
@@ -83,4 +82,5 @@ void lst_clear(t_philo **lst);
 int	ft_atoi(char *str);
 void	*routine(void *arg);
 void    *monitor_check(void *arg);
+bool    init_mutex(t_fork **fork,t_info *info);
 #endif
