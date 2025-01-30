@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/30 13:40:17 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:27:57 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,16 @@ int main(int argc, char **argv)
             return (1);
         }
         add_back(&threads, thread);
+        if (!init_mutex(&thread->fork))
+        {
+            lst_clear(&threads);
+            free(info);
+            return (1);
+        }
         i++;
     }
     fork = malloc(sizeof(t_fork));
     if (!fork)
-    {
-        lst_clear(&threads);
-        free(info);
-        return (1);
-    }
-    if (!init_mutex(&fork, info))
     {
         lst_clear(&threads);
         free(info);

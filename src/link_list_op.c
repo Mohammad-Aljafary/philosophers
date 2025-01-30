@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:59:41 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/29 14:26:04 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:27:28 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ t_philo *new_node(int status, int id, char **argv)
     node->prev = NULL;
     node->philo = 0;
     node->argv = argv;
+    node->fork = malloc(sizeof(t_fork));
+    if (!node->fork)
+    {
+        free (node);
+        return (NULL);
+    }
     return (node);
 }
 
@@ -66,12 +72,16 @@ void lst_clear(t_philo **lst)
         next_node = temp->next;
         if (next_node == *lst)
             next_node = NULL;
+        if (pthread_mutex_destroy(&temp->fork->fork) != 0)
+            free(temp->fork);
         if (pthread_join(temp->philo, NULL) != 0)
         {
+            free(temp->fork);
             free(temp);
             temp = next_node;
             continue;
         }
+        free(temp->fork);
         free(temp);
         temp = next_node;
     }

@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/30 13:59:28 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:28:09 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,5 @@ void lst_clear(t_philo **lst);
 int	ft_atoi(char *str);
 void	*routine(void *arg);
 void    *monitor_check(void *arg);
-bool    init_mutex(t_fork **fork,t_info *info);
+bool    init_mutex(t_fork **fork);
 #endif
