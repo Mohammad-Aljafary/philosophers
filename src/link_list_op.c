@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:59:41 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/30 14:27:28 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/31 20:44:54 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ t_philo *new_node(int status, int id, char **argv)
     return (node);
 }
 
+/**
+ * add_back - Adds a new node to the end of a circular doubly linked list.
+ * @lst: A pointer to the pointer to the head of the list.
+ * @node: The new node to be added to the list.
+ *
+ * This function adds a new node to the end of a circular doubly linked list.
+ * If the list is empty, the new node becomes the head and points to itself.
+ * Otherwise, the new node is added to the end and the links are updated accordingly.
+ */
 void    add_back(t_philo **lst, t_philo *node)
 {
     t_philo *ptr;
@@ -59,6 +68,16 @@ void    add_back(t_philo **lst, t_philo *node)
         (*lst)->prev = node;
     }
 }
+        
+/**
+ * lst_clear - Clears and frees all nodes in the linked list.
+ * @lst: Double pointer to the head of the linked list.
+ *
+ * This function iterates through the linked list, destroys the mutexes,
+ * joins the threads, and frees the memory allocated for each node and its fork.
+ * Finally, it sets the head of the list to NULL.
+ */
+
 void lst_clear(t_philo **lst)
 {
     t_philo *temp;
@@ -67,13 +86,13 @@ void lst_clear(t_philo **lst)
     if (!lst || !*lst)
         return ;
     temp = *lst;
-    while (temp)
+    while (temp && temp != *lst)
     {
         next_node = temp->next;
         if (next_node == *lst)
             next_node = NULL;
         if (pthread_mutex_destroy(&temp->fork->fork) != 0)
-            free(temp->fork);
+            continue;
         if (pthread_join(temp->philo, NULL) != 0)
         {
             free(temp->fork);

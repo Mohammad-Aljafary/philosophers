@@ -6,13 +6,13 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:11:39 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/30 08:59:37 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/31 20:37:07 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-int	ft_atoi(char *str)
+int	parse_atoi(char *str)
 {
 	int	result;
 	int	sign;
@@ -33,7 +33,8 @@ int	ft_atoi(char *str)
 		result += (*str - '0');
 		str++;
 	}
-    if (*str != '\0')
-        	return (0);
+	// Return an error code if there are non-numeric characters after the number
+	if (*str != '\0')
+			return (-1);
 	return (result * sign);
 }
