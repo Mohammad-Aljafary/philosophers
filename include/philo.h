@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 22:45:42 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/31 22:57:38 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#define RED     "\033[0;31m"
+#define GREEN   "\033[0;32m"
+#define YELLOW  "\033[0;33m"
+#define BLUE    "\033[0;34m"
+#define RESET   "\033[0m"
 typedef enum    e_bool
 {
     false,

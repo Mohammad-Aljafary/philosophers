@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 22:41:12 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/31 23:01:54 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void safe_printf(const char *msg, pthread_mutex_t *printf_mutex)
 {
     pthread_mutex_lock(printf_mutex);
-    printf("%s\n", msg);
+    printf("%s%s\n %s", YELLOW, msg, RESET);
     pthread_mutex_unlock(printf_mutex);  
 }
 
