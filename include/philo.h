@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 21:39:49 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/31 22:45:42 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,12 @@ typedef struct s_monitor
 
 
 
-t_philo *new_node(int status, int id, char **argv);
+t_philo *new_node(int status, int id, char **argv, t_info *info);
 void    add_back(t_philo **lst, t_philo *node);
 void lst_clear(t_philo **lst);
 int	parse_atoi(char *str);
 void	*routine(void *arg);
 void    *monitor_check(void *arg);
 bool    init_mutex(t_fork **fork);
+void safe_printf(const char *msg, pthread_mutex_t *printf_mutex);
 #endif

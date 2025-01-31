@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 21:37:51 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/31 22:46:19 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,15 @@ int main(int argc, char **argv)
         write(2, "Error: Invalid input\n", 22);
         return (1);
     }
+    if(pthread_mutex_init(&info->printf_mutex, NULL) != 0)
+    {
+        write(2, "Error: Failed to create mutex\n", 31);
+        free(info);
+        return (1);
+    } 
     while (i < info->num_of_philo)
     {
-        thread = new_node(thinking, i, argv);
+        thread = new_node(thinking, i, argv, info);
         if (!thread)
         {
             lst_clear(&threads);

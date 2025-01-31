@@ -6,13 +6,13 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:59:41 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 20:44:54 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/31 22:45:19 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-t_philo *new_node(int status, int id, char **argv)
+t_philo *new_node(int status, int id, char **argv, t_info *info)
 {
     t_philo *node;
 
@@ -31,6 +31,7 @@ t_philo *new_node(int status, int id, char **argv)
         free (node);
         return (NULL);
     }
+    node->info = info;
     return (node);
 }
 
