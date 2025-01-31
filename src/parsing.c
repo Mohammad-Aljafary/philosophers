@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:11:39 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 20:37:07 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/01/31 21:46:23 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	parse_atoi(char *str)
 		result += (*str - '0');
 		str++;
 	}
-	// Return an error code if there are non-numeric characters after the number
 	if (*str != '\0')
 			return (-1);
 	return (result * sign);
