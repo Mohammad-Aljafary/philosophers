@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:59:41 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/01 09:05:07 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/01 09:51:53 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_philo *new_node(int status, int id, char **argv, t_info *info)
     node->philo = 0;
     node->argv = argv;
     node->fork = malloc(sizeof(t_fork));
+    pthread_mutex_init(&node->lock, NULL);
     if (!node->fork)
     {
         free (node);

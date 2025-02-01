@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 22:57:38 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/01 12:21:02 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,8 @@ typedef struct s_philo
     char    **argv;
     t_fork *fork;
     t_info  *info;
+    pthread_mutex_t  lock;
 }   t_philo;
-
-typedef struct s_monitor
-{
-    pthread_t   monitor;
-    t_philo   *philo;
-}   t_monitor;
-
 
 
 t_philo *new_node(int status, int id, char **argv, t_info *info);

@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/01 09:09:44 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/01 12:17:05 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int main(int argc, char **argv)
     t_info  *info;
     t_philo *thread;
     t_philo *threads;
-    t_monitor   monitor;
     int i;
 
     i = 0;
@@ -104,16 +103,7 @@ int main(int argc, char **argv)
         thread = thread->next;
         i++;
     }
-    monitor.philo = threads;
-    if (pthread_create(&monitor.monitor, NULL, monitor_check, &monitor) != 0)
-    {
-        write(2, "Error: Failed to create thread\n", 31);
-        lst_clear(&threads);
-        free(info);
-        return (1);
-    }
     lst_clear(&threads);
-    pthread_join(monitor.monitor, NULL);
     free(info);
     return (0);
 } 
