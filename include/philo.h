@@ -25,6 +25,7 @@
 #define YELLOW  "\033[0;33m"
 #define BLUE    "\033[0;34m"
 #define RESET   "\033[0m"
+
 typedef enum    e_bool
 {
     false,
@@ -89,4 +90,5 @@ void	*routine(void *arg);
 void    *monitor_check(void *arg);
 bool    init_mutex(t_fork **fork);
 void safe_printf(const char *msg, pthread_mutex_t *printf_mutex);
+
 #endif
