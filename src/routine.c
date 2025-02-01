@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 23:01:54 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/01 09:09:53 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void *monitor_check(void *arg)
     t_monitor *monitor;
 
     monitor= (t_monitor *)arg;
-    printf("%d\n", monitor->philo->id);
     safe_printf("BOOMMM", &monitor->philo->info->printf_mutex);
     return (NULL);
 }
@@ -34,7 +33,6 @@ void *routine(void *arg)
     t_philo *philo;
 
     philo = (t_philo *)arg;
-    printf("id: %d\n", philo->id);
     safe_printf("BOOMMM", &philo->info->printf_mutex);
     return (NULL);
 }

@@ -6,11 +6,22 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:59:41 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 22:45:19 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/01 09:05:07 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+/**
+    * new_node - Creates a new node with the given status and id.
+    * @status: The status of the thread.
+    * @id: The id of the thread.
+    * @argv: The arguments passed to the program.
+    * @info: The info struct that contains the mutex and data to be passed to the thread.
+    * @fork: The fork struct that contains the mutex for the fork.
+    *
+    * Return: If an error occurs, return NULL.
+    * Otherwise, return a pointer to the new node. 
+*/
 
 t_philo *new_node(int status, int id, char **argv, t_info *info)
 {
@@ -35,14 +46,14 @@ t_philo *new_node(int status, int id, char **argv, t_info *info)
     return (node);
 }
 
-/**
- * add_back - Adds a new node to the end of a circular doubly linked list.
- * @lst: A pointer to the pointer to the head of the list.
- * @node: The new node to be added to the list.
- *
- * This function adds a new node to the end of a circular doubly linked list.
- * If the list is empty, the new node becomes the head and points to itself.
- * Otherwise, the new node is added to the end and the links are updated accordingly.
+/** 
+    * add_back - Adds a new node to the end of a circular doubly linked list.
+    * @lst: A pointer to the pointer to the head of the list.
+    * @node: The new node to be added to the list.
+    *
+    * This function adds a new node to the end of a circular doubly linked list.
+    * If the list is empty, the new node becomes the head and points to itself.
+    * Otherwise, the new node is added to the end and the links are updated accordingly.
  */
 void    add_back(t_philo **lst, t_philo *node)
 {
@@ -77,6 +88,9 @@ void    add_back(t_philo **lst, t_philo *node)
  * This function iterates through the linked list, destroys the mutexes,
  * joins the threads, and frees the memory allocated for each node and its fork.
  * Finally, it sets the head of the list to NULL.
+ * did not free the info struct because it is freed in the main function.
+ * did not protect the pthread_mutex_destroy and pthread_join because the list is already protected by the main thread.
+ * and i want it to continue the execution even if the thread is not joined or the mutex is not destroyed.
  */
 
 void lst_clear(t_philo **lst)
@@ -87,20 +101,13 @@ void lst_clear(t_philo **lst)
     if (!lst || !*lst)
         return ;
     temp = *lst;
-    while (temp && temp != *lst)
+    while (temp)
     {
         next_node = temp->next;
         if (next_node == *lst)
             next_node = NULL;
-        if (pthread_mutex_destroy(&temp->fork->fork) != 0)
-            continue;
-        if (pthread_join(temp->philo, NULL) != 0)
-        {
-            free(temp->fork);
-            free(temp);
-            temp = next_node;
-            continue;
-        }
+        pthread_mutex_destroy(&temp->fork->fork);
+        pthread_join(temp->philo, NULL);
         free(temp->fork);
         free(temp);
         temp = next_node;
