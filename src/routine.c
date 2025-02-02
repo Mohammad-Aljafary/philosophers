@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/01 12:26:04 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:27:05 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,12 @@ void    *routine(void *arg)
 
     while (1)
     {
-        eating(philo);
-        thinking(philo);
-        sleeping(philo); 
+        eating_thread(philo);
+        pthread_mutex_lock(&philo->lock);
+        usleep(1000);
+        pthread_mutex_unlock(&philo->lock);
+        thinking_thread(philo);
+        //sleeping(philo); 
     }
     return NULL;
 }

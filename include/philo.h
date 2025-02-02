@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/01 12:21:02 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:22:53 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ void	*routine(void *arg);
 void    *monitor_check(void *arg);
 bool    init_mutex(t_fork **fork);
 void safe_printf(const char *msg, pthread_mutex_t *printf_mutex);
-
+bool    eating_thread(t_philo *philo);
+bool    thinking_thread(t_philo *philo);
 #endif
