@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/02 14:22:53 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:24:13 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_info
 typedef struct s_fork
 {
     pthread_mutex_t fork;
-    int fork_status;
 }   t_fork;
 
 typedef struct s_philo
@@ -72,6 +71,7 @@ typedef struct s_philo
     char    **argv;
     t_fork *fork;
     t_info  *info;
+    long    last_meal;
     pthread_mutex_t  lock;
 }   t_philo;
 
@@ -86,4 +86,6 @@ bool    init_mutex(t_fork **fork);
 void safe_printf(const char *msg, pthread_mutex_t *printf_mutex);
 bool    eating_thread(t_philo *philo);
 bool    thinking_thread(t_philo *philo);
+long get_time_in_ms(void);
+bool    sleeping_thread(t_philo *philo);
 #endif

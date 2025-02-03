@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:11:39 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 22:17:07 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 10:57:28 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,11 @@ int	parse_atoi(char *str)
 	if (*str != '\0')
 			return (-1);
 	return (result * sign);
+}
+
+long	get_time_in_ms(void)
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 }

@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 12:26:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/02 14:28:54 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:24:04 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,33 @@ bool eating_thread(t_philo *philo)
         second_fork = philo->fork;
     }
     pthread_mutex_lock(&first_fork->fork);
-    first_fork->fork_status = occupied;
     pthread_mutex_lock(&second_fork->fork);
-    second_fork->fork_status = occupied;
+    printf("%d Thread is eating\n", philo->id);
     safe_printf("Thread is eating", &philo->info->printf_mutex);
     philo->state = eating;
-    first_fork->fork_status = not_occupied;
+    usleep(philo->info->time_to_eat);
     pthread_mutex_unlock(&first_fork->fork);
-    second_fork->fork_status = not_occupied;
     pthread_mutex_unlock(&second_fork->fork);
     return (true);
 }
 
 
-/* bool    sleeping(t_philo *philo)
+ bool    sleeping_thread(t_philo *philo)
 {
-    
-}*/
+    pthread_mutex_lock(&philo->lock);
+    philo->state = sleeping;
+    safe_printf("Thread is sleeping", &philo->info->printf_mutex);
+    usleep(philo->info->time_to_sleep);
+    pthread_mutex_unlock(&philo->lock);
+    return (true);
+}
 
 bool    thinking_thread(t_philo *philo)
 {
     pthread_mutex_lock(&philo->lock);
     philo->state = thinking;
     safe_printf("Thread is thinking", &philo->info->printf_mutex);
-    usleep(1000);
+    //usleep();
     pthread_mutex_unlock(&philo->lock);
     return (true);
 }

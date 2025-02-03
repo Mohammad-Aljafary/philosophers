@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/02 14:27:05 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:25:48 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 void    safe_printf(const char *msg, pthread_mutex_t *printf_mutex)
 {
     pthread_mutex_lock(printf_mutex);
-    printf("%s%s\n %s", YELLOW, msg, RESET);
+    printf("%s%s\n %s", BLUE, msg, RESET);
     pthread_mutex_unlock(printf_mutex);  
 }
 
@@ -54,7 +54,7 @@ void    *routine(void *arg)
         usleep(1000);
         pthread_mutex_unlock(&philo->lock);
         thinking_thread(philo);
-        //sleeping(philo); 
+        sleeping_thread(philo); 
     }
     return NULL;
 }
