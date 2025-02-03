@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/01 12:17:05 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 15:05:53 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 bool    handle_minus(t_info *info, char **argv)
 {
     info->num_of_philo = parse_atoi(argv[1]);
-    info->time_to_die = parse_atoi(argv[2]);
-    info->time_to_eat = parse_atoi(argv[3]);
-    info->time_to_sleep = parse_atoi(argv[4]);
+    info->time_to_die = parse_atoi(argv[2]) * 1000;
+    info->time_to_eat = parse_atoi(argv[3]) * 1000;
+    info->time_to_sleep = parse_atoi(argv[4]) * 1000;
+    info->simulation_over = false;
+    pthread_mutex_init(&info->death_mutex, NULL);
     if (info->num_of_philo <= 1 || info->time_to_die <= 0 
         || info->time_to_eat <= 0 || info->time_to_sleep <= 0
         || info->num_of_meals == 0)

@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/03 14:11:16 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 15:03:08 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,55 @@ bool    check_death(t_philo **philo)
     return (false);
 }
 
-void    *routine(void *arg)
+long get_current_time_ms(void)
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+}
+
+void *routine(void *arg)
 {
     t_philo *philo = (t_philo *)arg;
 
     while (1)
     {
+        // Check if the simulation should stop
+        pthread_mutex_lock(&philo->info->death_mutex);
+        if (philo->info->simulation_over)
+        {
+            pthread_mutex_unlock(&philo->info->death_mutex);
+            return NULL; // Exit thread
+        }
+        pthread_mutex_unlock(&philo->info->death_mutex);
+
+        // Check if the philosopher has died
+        if (get_time_in_ms() - philo->last_meal >= philo->info->time_to_die)
+        {
+            pthread_mutex_lock(&philo->info->death_mutex);
+            philo->info->simulation_over = true; // Stop all threads
+            printf("%ld\n", get_time_in_ms() - philo->last_meal );
+            printf("%ld\n", philo->info->time_to_die);
+            pthread_mutex_unlock(&philo->info->death_mutex);
+
+            safe_printf("Philosopher has died.\n", &philo->info->printf_mutex);
+            return NULL; // Exit thread
+        }
+
+        // Eating phase
         if (!eating_thread(philo))
-            break;
-        pthread_mutex_lock(&philo->lock);
-        usleep(1000);
-        pthread_mutex_unlock(&philo->lock);
+            return NULL; // If eating failed, philosopher dies
+
+        // Update last meal time
+        philo->last_meal =  get_time_in_ms();
+
+        // Thinking phase
         thinking_thread(philo);
-        sleeping_thread(philo); 
+
+        // Sleeping phase
+        sleeping_thread(philo);
     }
-    if (!check_if_died(philo))
-        safe_printf("thread is died", &philo->info->printf_mutex);
-    return (NULL);
+
+    return NULL;
 }
+

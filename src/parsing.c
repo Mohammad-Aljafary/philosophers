@@ -6,15 +6,15 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:11:39 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/03 10:57:28 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:59:59 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-int	parse_atoi(char *str)
+long long	parse_atoi(char *str)
 {
-	int	result;
+	long long	result;
 	int	sign;
 
 	result = 0;

@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/03 14:05:04 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 15:02:57 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,13 @@ typedef enum    e_fork
 typedef struct s_info
 {
     int num_of_philo;
-    int time_to_eat;
-    int time_to_sleep;
-    int time_to_die;
+    long time_to_eat;
+    long time_to_sleep;
+    long time_to_die;
     int num_of_meals;
+    int simulation_over;
     pthread_mutex_t printf_mutex;
+    pthread_mutex_t death_mutex;
 }   t_info;
 
 typedef struct s_fork
@@ -79,7 +81,7 @@ typedef struct s_philo
 t_philo *new_node(int status, int id, char **argv, t_info *info);
 void    add_back(t_philo **lst, t_philo *node);
 void lst_clear(t_philo **lst);
-int	parse_atoi(char *str);
+long long	parse_atoi(char *str);
 void	*routine(void *arg);
 void    *monitor_check(void *arg);
 bool    init_mutex(t_fork **fork);
