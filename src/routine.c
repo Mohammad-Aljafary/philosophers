@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/03 11:25:48 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:11:16 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ bool    check_if_died(t_philo *philo)
     ptr = philo;
     next_node = ptr->next; 
     while (ptr)
-    {
+    {  
+        if(check_death(&next_node))
+            return (false);
         if (next_node == philo)
             return (true);
         if (ptr->state == died)
@@ -43,18 +45,34 @@ bool    check_if_died(t_philo *philo)
     return (true);
 }
 
+bool    check_death(t_philo **philo)
+{
+    long    time;
+
+    time = get_time_in_ms();
+    if (time - (*philo)->last_meal >= (*philo)->info->time_to_die)
+    {
+        (*philo)->state = died;
+        return (true);
+    }
+    return (false);
+}
+
 void    *routine(void *arg)
 {
     t_philo *philo = (t_philo *)arg;
 
     while (1)
     {
-        eating_thread(philo);
+        if (!eating_thread(philo))
+            break;
         pthread_mutex_lock(&philo->lock);
         usleep(1000);
         pthread_mutex_unlock(&philo->lock);
         thinking_thread(philo);
         sleeping_thread(philo); 
     }
-    return NULL;
+    if (!check_if_died(philo))
+        safe_printf("thread is died", &philo->info->printf_mutex);
+    return (NULL);
 }

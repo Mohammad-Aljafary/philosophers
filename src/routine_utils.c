@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 12:26:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/03 11:24:04 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:05:21 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ bool eating_thread(t_philo *philo)
         first_fork = philo->prev->fork;
         second_fork = philo->fork;
     }
+    if (!check_if_died(philo))
+        return (false);
     pthread_mutex_lock(&first_fork->fork);
     pthread_mutex_lock(&second_fork->fork);
     printf("%d Thread is eating\n", philo->id);
     safe_printf("Thread is eating", &philo->info->printf_mutex);
     philo->state = eating;
+    philo->last_meal = get_time_in_ms();
     usleep(philo->info->time_to_eat);
     pthread_mutex_unlock(&first_fork->fork);
     pthread_mutex_unlock(&second_fork->fork);

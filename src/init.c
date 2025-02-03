@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 13:30:17 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/01/31 20:35:21 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:41:53 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,5 @@ bool    init_mutex(t_fork **fork)
         return (false);
     if (pthread_mutex_init(&(*fork)->fork, NULL) != 0)
         return (false);
-    (*fork)->fork_status = not_occupied;
     return (true);
 }

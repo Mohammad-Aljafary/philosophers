@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/03 11:24:13 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:05:04 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,6 @@ bool    eating_thread(t_philo *philo);
 bool    thinking_thread(t_philo *philo);
 long get_time_in_ms(void);
 bool    sleeping_thread(t_philo *philo);
+bool    check_death(t_philo **philo);
+bool    check_if_died(t_philo *philo);
 #endif
