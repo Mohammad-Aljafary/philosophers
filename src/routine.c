@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/05 09:17:51 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:33:54 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
     * @printf_mutex: The mutex that locks the standard output.
     * due to the data races caused by the threads when they write to the standard output. 
  */
-void    safe_printf(const char *msg, pthread_mutex_t *printf_mutex)
+void    safe_printf(const char *msg, pthread_mutex_t *printf_mutex, long current_time, int id)
 {
     pthread_mutex_lock(printf_mutex);
-    printf("%s%s\n %s", BLUE, msg, RESET);
+    printf("%ld %d %s%s\n %s", current_time, id, BLUE, msg, RESET);
     pthread_mutex_unlock(printf_mutex);  
 }
 
@@ -32,7 +32,7 @@ bool    check_if_died(t_philo *philo)
     ptr = philo;
     next_node = ptr->next; 
     while (ptr)
-    {  
+    {
         if(check_death(&next_node))
             return (false);
         if (next_node == philo)

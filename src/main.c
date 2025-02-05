@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/05 09:15:56 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:26:53 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 bool    handle_minus(t_info *info, char **argv)
 {
     info->num_of_philo = parse_atoi(argv[1]);
-    info->time_to_die = parse_atoi(argv[2]) * 1000;
-    info->time_to_eat = parse_atoi(argv[3]) * 1000;
-    info->time_to_sleep = parse_atoi(argv[4]) * 1000;
+    info->time_to_die = parse_atoi(argv[2]);
+    info->time_to_eat = parse_atoi(argv[3]);
+    info->time_to_sleep = parse_atoi(argv[4]);
     info->simulation_over = false;
     pthread_mutex_init(&info->death_mutex, NULL);
     if (info->num_of_philo <= 1 || info->time_to_die <= 0 
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
 
     while (i < info->num_of_philo)
     {
-        thread = new_node(thinking, i, argv, info);
+        thread = new_node(thinking, i + 1, argv, info);
         if (!thread)
         {
             lst_clear(&threads);
@@ -109,6 +109,5 @@ int main(int argc, char **argv)
     }
     lst_clear(&threads);
     free(info);
-
     return (0);
 }

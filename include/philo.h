@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/03 15:02:57 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:30:49 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,6 @@ typedef enum    e_state
     sleeping,
     died
 }   state;
-
-typedef enum    e_fork
-{
-    not_occupied,
-    occupied
-}   forks;
 
 typedef struct s_info
 {
@@ -85,7 +79,7 @@ long long	parse_atoi(char *str);
 void	*routine(void *arg);
 void    *monitor_check(void *arg);
 bool    init_mutex(t_fork **fork);
-void safe_printf(const char *msg, pthread_mutex_t *printf_mutex);
+void    safe_printf(const char *msg, pthread_mutex_t *printf_mutex, long current_time, int id);
 bool    eating_thread(t_philo *philo);
 bool    thinking_thread(t_philo *philo);
 long get_time_in_ms(void);
