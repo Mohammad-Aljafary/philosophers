@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/03 15:05:53 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/05 09:15:56 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ bool    handle_input(char **argv, int argc, t_info *info)
         return (false);
     return (true);
 }
-
 int main(int argc, char **argv)
 {
     t_info  *info;
@@ -64,15 +63,17 @@ int main(int argc, char **argv)
     i = 0;
     threads = NULL;
     info = malloc(sizeof(t_info)); 
-    if (info)
-        memset(info, 0, sizeof(t_info));
-    if (!info)  
+    if (!info)
         return (1);
+    memset(info, 0, sizeof(t_info));
+
     if (!handle_input(argv, argc, info))
     {
         write(2, "Error: Invalid input\n", 22);
+        free(info);
         return (1);
     }
+
     while (i < info->num_of_philo)
     {
         thread = new_node(thinking, i, argv, info);
@@ -91,6 +92,7 @@ int main(int argc, char **argv)
         }
         i++;
     }
+
     thread = threads;
     i = 0;
     while (i < info->num_of_philo)
@@ -107,6 +109,6 @@ int main(int argc, char **argv)
     }
     lst_clear(&threads);
     free(info);
-    return (0);
-} 
 
+    return (0);
+}

@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:59:41 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/03 14:43:08 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/05 09:16:54 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,11 @@ void lst_clear(t_philo **lst)
     temp = *lst;
     while (temp)
     {
+        pthread_join(temp->philo, NULL);
         next_node = temp->next;
         if (next_node == *lst)
             next_node = NULL;
         pthread_mutex_destroy(&temp->fork->fork);
-        pthread_join(temp->philo, NULL);
         free(temp->fork);
         free(temp);
         temp = next_node;
