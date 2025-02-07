@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/07 14:05:07 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:03:49 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,11 @@ long				get_time_in_ms(void);
 t_bool				sleeping_thread(t_philo *philo, long simulation_time);
 t_bool				check_death(t_philo *philo);
 t_bool				check_if_died(t_philo *philo);
+t_bool				take_fork(t_philo *philo, t_fork *fork,
+						long simulation_time);
+t_bool				acquire_forks(t_philo *philo, long simulation_time);
+void				release_forks(t_philo *philo);
+int					creating_list(t_info *info, char **argv, t_philo **threads);
+int					creating_threads(t_info *info, t_philo **threads);
+void				join_threads(t_info *info, t_philo **thread);
 #endif

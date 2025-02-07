@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 12:26:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/07 13:58:31 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:05:54 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,29 @@ void	ft_usleep(long long time_in_ms)
 		usleep(10);
 }
 
-t_bool	eating_thread(t_philo *philo, long simulation_time)
+t_bool	take_fork(t_philo *philo, t_fork *fork, long simulation_time)
 {
-	t_fork	*first_fork;
-	t_fork	*second_fork;
 	long	time;
 
 	time = get_time_in_ms();
+	pthread_mutex_lock(&philo->info->death_mutex);
+	if (check_death(philo) || philo->state == died)
+	{
+		pthread_mutex_unlock(&philo->info->death_mutex);
+		return (false);
+	}
+	pthread_mutex_unlock(&philo->info->death_mutex);
+	pthread_mutex_lock(&fork->fork);
+	safe_printf("has taken a fork", &philo->info->printf_mutex, time
+		- simulation_time, philo->id);
+	return (true);
+}
+
+t_bool	acquire_forks(t_philo *philo, long simulation_time)
+{
+	t_fork	*first_fork;
+	t_fork	*second_fork;
+
 	if (philo->id % 2 == 0)
 	{
 		first_fork = philo->fork;
@@ -38,34 +54,52 @@ t_bool	eating_thread(t_philo *philo, long simulation_time)
 		first_fork = philo->prev->fork;
 		second_fork = philo->fork;
 	}
-	pthread_mutex_lock(&philo->info->death_mutex);
-	if (check_death(philo) || philo->state == died)
-	{
-		pthread_mutex_unlock(&philo->info->death_mutex);
+	if (!take_fork(philo, first_fork, simulation_time))
 		return (false);
-	}
-	pthread_mutex_unlock(&philo->info->death_mutex);
-	pthread_mutex_lock(&first_fork->fork);
-	safe_printf("has taken a fork", &philo->info->printf_mutex, time
-		- simulation_time, philo->id);
-	pthread_mutex_lock(&philo->info->death_mutex);
-	if (check_death(philo) || philo->state == died)
+	if (!take_fork(philo, second_fork, simulation_time))
 	{
-		pthread_mutex_unlock(&philo->info->death_mutex);
 		pthread_mutex_unlock(&first_fork->fork);
 		return (false);
 	}
+	return (true);
+}
+
+t_bool	eating_thread(t_philo *philo, long simulation_time)
+{
+	long	time;
+
+	time = get_time_in_ms();
+	pthread_mutex_lock(&philo->info->death_mutex);
+	if (check_death(philo) || philo->state == died)
+	{
+		pthread_mutex_unlock(&philo->info->death_mutex);
+		return (false);
+	}
 	pthread_mutex_unlock(&philo->info->death_mutex);
-	pthread_mutex_lock(&second_fork->fork);
-	safe_printf("has taken a fork", &philo->info->printf_mutex, time
-		- simulation_time, philo->id);
 	safe_printf("is eating", &philo->info->printf_mutex, time - simulation_time,
 		philo->id);
-	philo->last_meal = get_time_in_ms();
+	philo->last_meal = time;
 	ft_usleep(philo->info->time_to_eat);
+	return (true);
+}
+
+void	release_forks(t_philo *philo)
+{
+	t_fork	*first_fork;
+	t_fork	*second_fork;
+
+	if (philo->id % 2 == 0)
+	{
+		first_fork = philo->fork;
+		second_fork = philo->prev->fork;
+	}
+	else
+	{
+		first_fork = philo->prev->fork;
+		second_fork = philo->fork;
+	}
 	pthread_mutex_unlock(&first_fork->fork);
 	pthread_mutex_unlock(&second_fork->fork);
-	return (true);
 }
 
 t_bool	sleeping_thread(t_philo *philo, long simulation_time)

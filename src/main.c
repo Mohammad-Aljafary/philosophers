@@ -6,12 +6,13 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/07 14:04:31 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:04:36 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
+t_bool	handle_minus(t_info *info, char **argv)
 /**
  * handle_minus - Handles the input and checks if it is valid.
  * the error occurs when the input is less than or equal to 0.
@@ -20,7 +21,6 @@
  * cause when there is only one philo, he can't eat alone.
  *
  */
-t_bool	handle_minus(t_info *info, char **argv)
 {
 	info->num_of_philo = parse_atoi(argv[1]);
 	info->time_to_die = parse_atoi(argv[2]);
@@ -34,6 +34,8 @@ t_bool	handle_minus(t_info *info, char **argv)
 		return (false);
 	return (true);
 }
+
+t_bool	handle_input(char **argv, int argc, t_info *info)
 /**
  * handle_input - Handles the input and checks if it is valid.
  * @argv: The arguments passed to the program.
@@ -43,7 +45,6 @@ t_bool	handle_minus(t_info *info, char **argv)
 	* @info: The info struct that contains the mutex and data to be passed to the thread.
  *
  */
-t_bool	handle_input(char **argv, int argc, t_info *info)
 {
 	info->num_of_meals = -1;
 	if (argc == 5)
@@ -60,11 +61,8 @@ t_bool	handle_input(char **argv, int argc, t_info *info)
 int	main(int argc, char **argv)
 {
 	t_info	*info;
-	t_philo	*thread;
 	t_philo	*threads;
-	int		i;
 
-	i = 0;
 	threads = NULL;
 	info = malloc(sizeof(t_info));
 	if (!info)
@@ -76,51 +74,11 @@ int	main(int argc, char **argv)
 		free(info);
 		return (1);
 	}
-	while (i < info->num_of_philo)
-	{
-		thread = new_node(thinking, i + 1, argv, info);
-		if (!thread)
-		{
-			lst_clear(&threads);
-			free(info);
-			return (1);
-		}
-		add_back(&threads, thread);
-		if (!init_mutex(&thread->fork, info))
-		{
-			lst_clear(&threads);
-			free(info);
-			return (1);
-		}
-		i++;
-	}
-	thread = threads;
-	i = 0;
-	while (i < info->num_of_philo)
-	{
-		if (pthread_create(&thread->philo, NULL, routine, thread) != 0)
-		{
-			write(2, "Error: Failed to create thread\n", 31);
-			while (--i >= 0)
-			{
-				thread = thread->prev;
-				pthread_join(thread->philo, NULL);
-			}
-			lst_clear(&threads);
-			free(info);
-			return (1);
-		}
-		thread = thread->next;
-		i++;
-	}
-	thread = threads;
-	i = 0;
-	while (i < info->num_of_philo)
-	{
-		pthread_join(thread->philo, NULL);
-		thread = thread->next;
-		i++;
-	}
+	if (creating_list(info, argv, &threads))
+            return (1);
+	if (creating_threads(info, &threads))
+            return (1);
+	join_threads(info, &threads);
 	lst_clear(&threads);
 	free(info);
 	return (0);

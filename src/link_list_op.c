@@ -26,7 +26,7 @@ t_philo	*new_node(int status, int id, char **argv, t_info *info)
  * Otherwise, return a pointer to the new node.
  */
 {
-	t_philo	*node;
+	t_philo *node;
 
 	node = malloc(sizeof(t_philo));
 	if (!node)
@@ -62,7 +62,7 @@ void	add_back(t_philo **lst, t_philo *node)
 	the new node is added to the end and the links are updated accordingly.
  */
 {
-	t_philo	*ptr;
+	t_philo *ptr;
 
 	if (!lst || !node)
 		return ;
@@ -100,8 +100,8 @@ void	lst_clear(t_philo **lst)
 	* and i want it to continue the execution even if the thread is not joined or the mutex is not destroyed.
  */
 {
-	t_philo	*temp;
-	t_philo	*next_node;
+	t_philo *temp;
+	t_philo *next_node;
 
 	if (!lst || !*lst)
 		return ;
