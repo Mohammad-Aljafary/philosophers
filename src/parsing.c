@@ -6,11 +6,12 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:11:39 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/05 08:58:12 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/07 13:49:15 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+
 long long	parse_atoi(char *str)
 {
 	long long	result;
@@ -35,9 +36,11 @@ long long	parse_atoi(char *str)
 		return (-1);
 	return (result);
 }
+
 long	get_time_in_ms(void)
 {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
