@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:59:41 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/05 09:16:54 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/07 08:57:31 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_philo *new_node(int status, int id, char **argv, t_info *info)
     node->philo = 0;
     node->argv = argv;
     node->last_meal = 0;
+    node->meals_eaten = 0;
     node->fork = malloc(sizeof(t_fork));
     pthread_mutex_init(&node->lock, NULL);
     if (!node->fork)
@@ -94,6 +95,11 @@ void    add_back(t_philo **lst, t_philo *node)
  * did not protect the pthread_mutex_destroy and pthread_join because the list is already protected by the main thread.
  * and i want it to continue the execution even if the thread is not joined or the mutex is not destroyed.
  */
+pthread_mutex_t list_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+// In any thread that accesses the list:
+
+// ... access or modify the list ...
 
 void lst_clear(t_philo **lst)
 {
@@ -105,12 +111,12 @@ void lst_clear(t_philo **lst)
     temp = *lst;
     while (temp)
     {
-        pthread_join(temp->philo, NULL);
         next_node = temp->next;
         if (next_node == *lst)
             next_node = NULL;
         pthread_mutex_destroy(&temp->fork->fork);
         free(temp->fork);
+        temp->fork = NULL;
         free(temp);
         temp = next_node;
     }

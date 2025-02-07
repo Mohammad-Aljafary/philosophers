@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/05 12:30:49 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/07 10:00:11 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_philo
     t_fork *fork;
     t_info  *info;
     long    last_meal;
+    int             meals_eaten;
     pthread_mutex_t  lock;
 }   t_philo;
 
@@ -78,12 +79,12 @@ void lst_clear(t_philo **lst);
 long long	parse_atoi(char *str);
 void	*routine(void *arg);
 void    *monitor_check(void *arg);
-bool    init_mutex(t_fork **fork);
+bool    init_mutex(t_fork **fork, t_info *info);
 void    safe_printf(const char *msg, pthread_mutex_t *printf_mutex, long current_time, int id);
-bool    eating_thread(t_philo *philo);
-bool    thinking_thread(t_philo *philo);
-long get_time_in_ms(void);
-bool    sleeping_thread(t_philo *philo);
+bool eating_thread(t_philo *philo, long simulation_time);
+bool    thinking_thread(t_philo *philo, long simulation_time);
+long	get_time_in_ms(void);
+bool    sleeping_thread(t_philo *philo, long simulation_time);
 bool    check_death(t_philo **philo);
 bool    check_if_died(t_philo *philo);
 #endif

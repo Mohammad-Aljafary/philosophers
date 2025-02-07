@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/05 12:26:53 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/07 09:49:05 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ bool    handle_input(char **argv, int argc, t_info *info)
         return (false);
     return (true);
 }
+
 int main(int argc, char **argv)
 {
     t_info  *info;
@@ -84,7 +85,7 @@ int main(int argc, char **argv)
             return (1);
         }
         add_back(&threads, thread);
-        if (!init_mutex(&thread->fork))
+        if (!init_mutex(&thread->fork, info))
         {
             lst_clear(&threads);
             free(info);
@@ -100,11 +101,24 @@ int main(int argc, char **argv)
         if (pthread_create(&thread->philo, NULL, routine, thread) != 0)
         {
             write(2, "Error: Failed to create thread\n", 31);
+            while (--i >= 0)
+            {
+                thread = thread->prev;
+                pthread_join(thread->philo, NULL);
+            }
             lst_clear(&threads);
             free(info);
             return (1);
         }
         thread = thread->next;
+        i++;
+    }
+    thread = threads;
+    i = 0;
+    while (i < info->num_of_philo)
+    {
+        pthread_join(thread->philo, NULL);
+        thread= thread->next;
         i++;
     }
     lst_clear(&threads);

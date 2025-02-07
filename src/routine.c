@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/05 12:33:54 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/07 10:00:44 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,22 @@ bool    check_death(t_philo **philo)
     return (false);
 }
 
-long get_current_time_ms(void)
-{
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-}
-
 void *routine(void *arg)
 {
     t_philo *philo = (t_philo *)arg;
+    long    time;
 
+    time = get_time_in_ms();
     while (1)
     {
-        eating_thread(philo);
-        sleeping_thread(philo);
-        thinking_thread(philo);
+        if ((philo->meals_eaten >= philo->info->num_of_meals) && philo->info->num_of_meals != -1)
+            break;
+        thinking_thread(philo, time);
+        sleeping_thread(philo, time);
+        eating_thread(philo, time);
     }
-    return NULL;
+    
+    return (NULL);
 }
 
 
