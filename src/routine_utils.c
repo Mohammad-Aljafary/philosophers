@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 12:26:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/08 12:33:49 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/08 14:50:02 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,6 @@ t_bool	sleeping_thread(t_philo *philo, long simulation_time)
 
 	time = get_time_in_ms();
 	pthread_mutex_lock(&philo->lock);
-	if (check_philo_state(philo))
-	{	
-		pthread_mutex_unlock(&philo->lock);
-		return (false);	
-	}
 	philo->state = sleeping;
 	safe_printf("is sleeping", &philo->info->printf_mutex, time
 		- simulation_time, philo->id);
@@ -130,11 +125,6 @@ t_bool	thinking_thread(t_philo *philo, long simulation_time)
 
 	time = get_time_in_ms();
 	pthread_mutex_lock(&philo->lock);
-	if (check_philo_state(philo))
-    {
-		pthread_mutex_unlock(&philo->lock);
-		return (false);	
-	}
 	philo->state = thinking;
 	safe_printf("is thinking", &philo->info->printf_mutex, time
 		- simulation_time, philo->id);

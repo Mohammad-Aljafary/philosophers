@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/07 15:04:36 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/08 14:45:00 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_bool	handle_minus(t_info *info, char **argv)
 	info->time_to_sleep = parse_atoi(argv[4]);
 	info->simulation_over = false;
 	pthread_mutex_init(&info->death_mutex, NULL);
+	pthread_mutex_init(&info->simulation_mutex, NULL);
 	if (info->num_of_philo <= 1 || info->time_to_die <= 0
 		|| info->time_to_eat <= 0 || info->time_to_sleep <= 0
 		|| info->num_of_meals == 0)
@@ -79,6 +80,9 @@ int	main(int argc, char **argv)
 	if (creating_threads(info, &threads))
             return (1);
 	join_threads(info, &threads);
+	pthread_mutex_destroy(&info->death_mutex);
+	pthread_mutex_destroy(&info->simulation_mutex);
+	pthread_mutex_destroy(&info->printf_mutex);
 	lst_clear(&threads);
 	free(info);
 	return (0);

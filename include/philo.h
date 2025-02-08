@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/08 12:34:20 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/08 14:41:43 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_info
 	int				simulation_over;
 	pthread_mutex_t	printf_mutex;
 	pthread_mutex_t	death_mutex;
+	pthread_mutex_t simulation_mutex;
 }					t_info;
 
 typedef struct s_fork

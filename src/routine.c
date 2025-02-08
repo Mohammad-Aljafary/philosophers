@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/08 12:37:24 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:03:05 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,21 @@ t_bool	check_death(t_philo *philo)
 {
 	long	time;
 
+	pthread_mutex_lock(&philo->info->simulation_mutex);
 	time = get_time_in_ms();
 	if (philo->last_meal == 0)
 		philo->last_meal = time;
-	if (time - philo->last_meal >= philo->info->time_to_die)
+	if (time - philo->last_meal >= philo->info->time_to_die || philo->state == died)
 	{
+		/* pthread_mutex_unlock(&philo->info->death_mutex);
+		pthread_mutex_lock(&philo->info->death_mutex);*/
+		change_statement(philo);
 		philo->state = died;
+		philo->info->simulation_over = true;
+		pthread_mutex_unlock(&philo->info->simulation_mutex); 
 		return (true);
 	}
+	pthread_mutex_unlock(&philo->info->simulation_mutex); 
 	return (false);
 }
 
@@ -64,6 +71,9 @@ t_bool	check_philo_state(t_philo *philo)
 	if ((philo->meals_eaten >= philo->info->num_of_meals
 			&& philo->info->num_of_meals != -1) || philo->state == died)
 	{
+		pthread_mutex_lock(&philo->info->simulation_mutex);
+		change_statement(philo);
+		pthread_mutex_unlock(&philo->info->simulation_mutex);
         philo->info->simulation_over = true;
 		pthread_mutex_unlock(&philo->info->death_mutex);
 		return (true);
@@ -90,16 +100,15 @@ void *routine(void *arg)
             break;
         }
         pthread_mutex_unlock(&philo->info->death_mutex);
-
         if (check_philo_state(philo))
             break;
         if (!thinking_thread(philo, time))
 			break;
-        if (check_philo_state(philo))
+       if (philo->state == died)
             break;
         if (!sleeping_thread(philo, time))
 			break;
-        if (check_philo_state(philo))
+        if (philo->state == died)
             break;
 		if (!acquire_forks(philo, time))
 			break;
