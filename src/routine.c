@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/07 15:14:37 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/08 12:37:24 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,51 +64,51 @@ t_bool	check_philo_state(t_philo *philo)
 	if ((philo->meals_eaten >= philo->info->num_of_meals
 			&& philo->info->num_of_meals != -1) || philo->state == died)
 	{
-		pthread_mutex_unlock(&philo->info->death_mutex);
         philo->info->simulation_over = true;
+		pthread_mutex_unlock(&philo->info->death_mutex);
 		return (true);
 	}
 	pthread_mutex_unlock(&philo->info->death_mutex);
 	return (false);
 }
+
 void *routine(void *arg)
 {
     t_philo *philo;
     long time;
-    static int printt = 0;  // Static variable to ensure the "died" message is printed only once
+    //static int printt = 0;  // Static variable to ensure the "died" message is printed only once
 
     philo = (t_philo *)arg;
     time = get_time_in_ms();
 
-    while (!philo->info->simulation_over)
+    while (1)
     {
-        if (check_philo_state(philo))
-            break;
-        thinking_thread(philo, time);
-        if (check_philo_state(philo))
-            break;
-        sleeping_thread(philo, time);
-        if (check_philo_state(philo))
-            break;
-        if (!acquire_forks(philo, time))
-            break;
-        if (!eating_thread(philo, time))
+        pthread_mutex_lock(&philo->info->death_mutex);
+        if (philo->info->simulation_over)
         {
-            release_forks(philo);
+            pthread_mutex_unlock(&philo->info->death_mutex);
             break;
         }
+        pthread_mutex_unlock(&philo->info->death_mutex);
 
-        release_forks(philo);
+        if (check_philo_state(philo))
+            break;
+        if (!thinking_thread(philo, time))
+			break;
+        if (check_philo_state(philo))
+            break;
+        if (!sleeping_thread(philo, time))
+			break;
+        if (check_philo_state(philo))
+            break;
+		if (!acquire_forks(philo, time))
+			break;
+		if (!eating_thread(philo, time))
+		{
+			release_forks(philo);
+			break;
+		}
+		release_forks(philo);
     }
-
-    // Check if the philosopher is dead and print "died" once
-    pthread_mutex_lock(&philo->info->death_mutex);
-    if (check_death(philo) && printt == 0)  // Ensure "died" is printed only once
-    {
-        safe_printf("died", &philo->info->printf_mutex, get_time_in_ms(), philo->id);
-        printt = 1;  // Set the flag to 1 so the message won't be printed again
-    }
-    pthread_mutex_unlock(&philo->info->death_mutex);
-
     return NULL;
 }

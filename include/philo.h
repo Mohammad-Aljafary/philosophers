@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/07 15:03:49 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/08 12:34:20 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,5 @@ void				release_forks(t_philo *philo);
 int					creating_list(t_info *info, char **argv, t_philo **threads);
 int					creating_threads(t_info *info, t_philo **threads);
 void				join_threads(t_info *info, t_philo **thread);
+t_bool	check_philo_state(t_philo *philo);
 #endif
