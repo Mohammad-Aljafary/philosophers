@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/09 09:36:02 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/09 11:41:18 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void *routine(void *arg)
         if (check_philo_state(philo))
             break;
         if (!thinking_thread(philo, time))
-			break;
+			break;f
 		if (!acquire_forks(philo, time))
 			break;
 		if (!eating_thread(philo, time))
@@ -120,6 +120,6 @@ void *routine(void *arg)
         if (philo->state == died)
             break;
     }
-	safe_printf ("died", &philo->info->printf_mutex, get_time_in_ms(), philo->id);
+	safe_printf ("died", &philo->info->printf_mutex, get_time_in_ms() - philo->last_meal, philo->id);
     return NULL;
 }
