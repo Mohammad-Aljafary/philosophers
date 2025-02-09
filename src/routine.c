@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/08 15:03:05 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/09 09:36:02 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	safe_printf(const char *msg, pthread_mutex_t *printf_mutex,
  */
 {
 	pthread_mutex_lock(printf_mutex);
-	printf("%ld %d %s%s\n %s", current_time, id, BLUE, msg, RESET);
+	printf("%s%ld %s%d %s%s\n %s", YELLOW, current_time, GREEN, id, BLUE, msg, RESET);
 	pthread_mutex_unlock(printf_mutex);
 }
 
@@ -51,11 +51,12 @@ t_bool	check_death(t_philo *philo)
 	time = get_time_in_ms();
 	if (philo->last_meal == 0)
 		philo->last_meal = time;
-	if (time - philo->last_meal >= philo->info->time_to_die || philo->state == died)
+	if (time - philo->last_meal >= philo->info->time_to_die || philo->state == died 
+		|| philo->info->simulation_over == true)
 	{
 		/* pthread_mutex_unlock(&philo->info->death_mutex);
 		pthread_mutex_lock(&philo->info->death_mutex);*/
-		change_statement(philo);
+		//change_statement(philo);
 		philo->state = died;
 		philo->info->simulation_over = true;
 		pthread_mutex_unlock(&philo->info->simulation_mutex); 
@@ -69,11 +70,12 @@ t_bool	check_philo_state(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->info->death_mutex);
 	if ((philo->meals_eaten >= philo->info->num_of_meals
-			&& philo->info->num_of_meals != -1) || philo->state == died)
+			&& philo->info->num_of_meals != -1) || philo->state == died
+			|| philo->info->simulation_over == true)
 	{
 		pthread_mutex_lock(&philo->info->simulation_mutex);
 		change_statement(philo);
-		pthread_mutex_unlock(&philo->info->simulation_mutex);
+		pthread_mutex_unlock(&philo->info->simulation_mutex); 
         philo->info->simulation_over = true;
 		pthread_mutex_unlock(&philo->info->death_mutex);
 		return (true);
@@ -90,7 +92,6 @@ void *routine(void *arg)
 
     philo = (t_philo *)arg;
     time = get_time_in_ms();
-
     while (1)
     {
         pthread_mutex_lock(&philo->info->death_mutex);
@@ -104,12 +105,6 @@ void *routine(void *arg)
             break;
         if (!thinking_thread(philo, time))
 			break;
-       if (philo->state == died)
-            break;
-        if (!sleeping_thread(philo, time))
-			break;
-        if (philo->state == died)
-            break;
 		if (!acquire_forks(philo, time))
 			break;
 		if (!eating_thread(philo, time))
@@ -118,6 +113,13 @@ void *routine(void *arg)
 			break;
 		}
 		release_forks(philo);
+       if (philo->state == died)
+            break;
+        if (!sleeping_thread(philo, time))
+			break;
+        if (philo->state == died)
+            break;
     }
+	safe_printf ("died", &philo->info->printf_mutex, get_time_in_ms(), philo->id);
     return NULL;
 }
