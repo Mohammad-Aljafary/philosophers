@@ -69,7 +69,7 @@ int	creating_threads(t_info *info, t_philo **threads)
 
 void	join_threads(t_info *info, t_philo **thread)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info->num_of_philo)

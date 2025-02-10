@@ -5,4 +5,5 @@ SRCS = src/main.c \
        src/routine.c \
        src/init.c \
        src/routine_utils.c \
-       src/list_utils.c
+       src/list_utils.c \
+       src/forks_utils.c
