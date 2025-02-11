@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/10 10:36:43 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/11 09:02:50 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ void	safe_printf(const char *msg, pthread_mutex_t *printf_mutex,
 }
 
 void	print_died(t_philo *philo)
+/**
+ * print_died - Prints the died message.
+ */
 {
 	static int	printt = 0;
 
@@ -41,6 +44,12 @@ void	print_died(t_philo *philo)
 }
 
 t_bool	routine_2(t_philo *philo, long time)
+/**
+ * routine_2 - The routine of the philo.
+ * @philo: The philo to run the routine.
+ * @time: The time when the simulation started.
+ * @return: true if the philo finished the routine, false otherwise.
+ */
 {
 	if (check_philo_state(philo))
 		return (false);
@@ -60,6 +69,11 @@ t_bool	routine_2(t_philo *philo, long time)
 }
 
 void	*routine(void *arg)
+/**
+ * routine - The routine of the philo.
+ * @arg: The philo to run the routine.
+ * @return: NULL.
+ */
 {
 	t_philo	*philo;
 	long	time;

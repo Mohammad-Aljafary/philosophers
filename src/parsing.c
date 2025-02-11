@@ -6,13 +6,18 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:11:39 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/07 13:49:15 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/11 09:01:23 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
 long long	parse_atoi(char *str)
+/**
+ * parse_atoi - Parses a string to an integer.
+ * @str: The string to be parsed.
+ * @return: The integer value of the string.
+ */
 {
 	long long	result;
 

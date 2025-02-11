@@ -6,13 +6,20 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 14:52:03 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/07 15:05:42 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/11 09:01:04 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
 int	creating_list(t_info *info, char **argv, t_philo **threads)
+/**
+ * creating_list - Creates a circular doubly linked list of threads.
+ * @info: The info struct that contains the data to be passed to the threads.
+ * @argv: The arguments passed to the program.
+ * @threads: A pointer to the head of the list.
+ * @return: 1 if an error occurs, 0 otherwise.
+ */
 {
 	int		i;
 	t_philo	*thread;
@@ -41,6 +48,12 @@ int	creating_list(t_info *info, char **argv, t_philo **threads)
 }
 
 int	creating_threads(t_info *info, t_philo **threads)
+/**
+ * creating_threads - Creates the threads.
+ * @info: The info struct that contains the data to be passed to the threads.
+ * @threads: A pointer to the head of the list.
+ * @return: 1 if an error occurs, 0 otherwise.
+ */
 {
 	int		i;
 	t_philo	*thread;
@@ -68,6 +81,12 @@ int	creating_threads(t_info *info, t_philo **threads)
 }
 
 void	join_threads(t_info *info, t_philo **thread)
+/**
+ * join_threads - Joins the threads.
+ * @info: The info struct that contains the data to be passed to the threads.
+ * @thread: A pointer to the head of the list.
+ * @return: 1 if an error occurs, 0 otherwise.
+ */
 {
 	int	i;
 
