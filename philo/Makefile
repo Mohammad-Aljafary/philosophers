@@ -3,7 +3,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra 
+CFLAGS = -Wall -Werror -Wextra
 
 INCLUDES = -I./include/
 OBJ = obj

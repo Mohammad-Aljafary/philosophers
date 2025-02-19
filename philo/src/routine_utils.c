@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 12:26:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/11 09:02:17 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:01:08 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_usleep(long long time_in_ms)
 
 	start_time = get_time_in_ms();
 	while ((get_time_in_ms() - start_time) < time_in_ms)
-		usleep(10);
+		usleep(5);
 }
 
 t_bool	eating_thread(t_philo *philo, long simulation_time)
