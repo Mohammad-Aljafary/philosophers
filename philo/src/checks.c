@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 10:36:19 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/04/14 08:34:52 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:24:08 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_bool	check_death(t_philo *philo)
 		|| philo->state == died || philo->info->simulation_over == true)
 	{
 		philo->state = died;
-		philo->info->simulation_over = true;
+		//philo->info->simulation_over = true;
 		pthread_mutex_unlock(&philo->info->simulation_mutex);
 		return (true);
 	}
@@ -99,7 +99,7 @@ t_bool	check_philo_state(t_philo *philo)
 	}
 	if (philo->state == died || philo->info->simulation_over == true)
 	{
-		philo->info->simulation_over = true;
+		//philo->info->simulation_over = true;
 		pthread_mutex_unlock(&philo->info->death_mutex);
 		return (true);
 	}

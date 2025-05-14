@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 12:26:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/05/13 16:36:08 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:40:45 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_bool	thinking_thread(t_philo *philo, long simulation_time)
 	philo->state = thinking;
 	safe_printf("is thinking", &philo->info->printf_mutex, time
 		- simulation_time, philo->id);
-	ft_usleep(200);
+	//ft_usleep(200);
 	pthread_mutex_unlock(&philo->lock);
 	return (true);
 }

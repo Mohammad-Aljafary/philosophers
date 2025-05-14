@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/04/14 08:50:28 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:39:16 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_bool	handle_minus(t_info *info, char **argv)
 		return (false);
 	pthread_mutex_init(&info->death_mutex, NULL);
 	pthread_mutex_init(&info->simulation_mutex, NULL);
+	pthread_mutex_init(&info->monitor_mutex, NULL);
 	return (true);
 }
 
@@ -64,6 +65,38 @@ t_bool	handle_input(char **argv, int argc, t_info *info)
 	return (true);
 }
 
+t_bool	check_if_died(t_philo *philo)
+{
+	if (philo->state == died)
+		return (1);
+	return (0);
+}
+
+void	monitor(t_philo **philo, t_info *info)
+{
+	t_philo	*thread = *philo;
+
+	while (1)
+	{
+		// Optionally protect this with a simulation_mutex
+		if (check_death(thread))
+		{
+			pthread_mutex_lock(&info->monitor_mutex);
+			info->simulation_over = true;
+			pthread_mutex_unlock(&info->monitor_mutex);
+			break;
+		}
+
+		// Move to next philosopher or loop back
+		if (thread->next)
+			thread = thread->next;
+		else
+			thread = *philo;
+
+		usleep(1000); // prevent busy waiting
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_info	*info;
@@ -84,10 +117,12 @@ int	main(int argc, char **argv)
 		return (1);
 	if (creating_threads(info, &threads))
 		return (1);
+	monitor(&threads, info);
 	join_threads(info, &threads);
 	pthread_mutex_destroy(&info->death_mutex);
 	pthread_mutex_destroy(&info->simulation_mutex);
 	pthread_mutex_destroy(&info->printf_mutex);
+	pthread_mutex_destroy(&info->monitor_mutex);
 	lst_clear(&threads);
 	free(info);
 	return (0);

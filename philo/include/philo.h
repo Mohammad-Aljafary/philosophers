@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/04/14 08:45:40 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:28:29 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_info
 	pthread_mutex_t	printf_mutex;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	simulation_mutex;
+	pthread_mutex_t	monitor_mutex;
 }					t_info;
 
 typedef struct s_fork
@@ -87,6 +88,7 @@ long				get_time_in_ms(void);
 t_bool				check_death(t_philo *philo);
 t_bool				check_if_died(t_philo *philo);
 t_bool				check_philo_state(t_philo *philo);
+void				change_statement(t_philo *philo);
 t_bool				thinking_thread(t_philo *philo, long simulation_time);
 t_bool				sleeping_thread(t_philo *philo, long simulation_time);
 t_bool				eating_thread(t_philo *philo, long simulation_time);
