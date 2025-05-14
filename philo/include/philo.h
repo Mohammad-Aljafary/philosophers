@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/10 10:38:41 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/04/14 08:45:40 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_info
 	long			time_to_die;
 	int				num_of_meals;
 	int				simulation_over;
+	t_bool			flag;
 	pthread_mutex_t	printf_mutex;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	simulation_mutex;

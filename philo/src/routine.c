@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/02/11 09:02:50 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/04/14 08:59:38 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	safe_printf(const char *msg, pthread_mutex_t *printf_mutex,
  */
 {
 	pthread_mutex_lock(printf_mutex);
-	printf("%s%ld %s%d %s%s\n%s", YELLOW, current_time, GREEN, id, BLUE, msg,
+	printf("%s%ld %s%d %s%s\n%s", YELLOW, current_time, GREEN, id, RED, msg,
 		RESET);
 	pthread_mutex_unlock(printf_mutex);
 }
 
-void	print_died(t_philo *philo)
+void	print_died(t_philo *philo, long time)
 /**
  * print_died - Prints the died message.
  */
@@ -38,7 +38,7 @@ void	print_died(t_philo *philo)
 	if (philo->state == died && printt == 0)
 	{
 		safe_printf("died", &philo->info->printf_mutex, get_time_in_ms()
-			- philo->last_meal, philo->id);
+			- time, philo->id);
 		printt = 1;
 	}
 }
@@ -97,7 +97,7 @@ void	*routine(void *arg)
 			break ;
 	}
 	pthread_mutex_lock(&philo->info->death_mutex);
-	print_died(philo);
+	print_died(philo, time);
 	pthread_mutex_unlock(&philo->info->death_mutex);
 	return (NULL);
 }
