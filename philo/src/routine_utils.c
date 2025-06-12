@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 12:26:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/05/14 13:40:45 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/12 17:53:56 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ t_bool	eating_thread(t_philo *philo, long simulation_time)
 	safe_printf("is eating", &philo->info->printf_mutex, time - simulation_time,
 		philo->id);
 	philo->last_meal = time;
-	pthread_mutex_lock(&philo->info->death_mutex);
 	philo->meals_eaten++;
-	pthread_mutex_unlock(&philo->info->death_mutex);
 	ft_usleep(philo->info->time_to_eat);
 	return (true);
 }
@@ -66,12 +64,10 @@ t_bool	sleeping_thread(t_philo *philo, long simulation_time)
 	time = get_time_in_ms();
 	if (check_philo_state(philo))
 		return (false);
-	pthread_mutex_lock(&philo->lock);
 	philo->state = sleeping;
 	safe_printf("is sleeping", &philo->info->printf_mutex, time
 		- simulation_time, philo->id);
 	ft_usleep(philo->info->time_to_sleep);
-	pthread_mutex_unlock(&philo->lock);
 	return (true);
 }
 
@@ -88,11 +84,9 @@ t_bool	thinking_thread(t_philo *philo, long simulation_time)
 	time = get_time_in_ms();
 	if (check_philo_state(philo))
 		return (false);
-	pthread_mutex_lock(&philo->lock);
 	philo->state = thinking;
 	safe_printf("is thinking", &philo->info->printf_mutex, time
 		- simulation_time, philo->id);
-	//ft_usleep(200);
-	pthread_mutex_unlock(&philo->lock);
+	ft_usleep(200);
 	return (true);
 }

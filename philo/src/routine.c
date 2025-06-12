@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/04/14 08:59:38 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:51:29 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_died(t_philo *philo, long time)
  * print_died - Prints the died message.
  */
 {
-	static int	printt = 0;
+	static _Atomic  int	printt = 0;
 
 	if (philo->state == died && printt == 0)
 	{
@@ -75,29 +75,22 @@ void	*routine(void *arg)
  * @return: NULL.
  */
 {
-	t_philo	*philo;
-	long	time;
+	t_philo			*philo;
+	_Atomic long	time;
 
 	philo = (t_philo *)arg;
 	time = get_time_in_ms();
 	while (1)
 	{
-		pthread_mutex_lock(&philo->info->death_mutex);
 		if (philo->info->simulation_over)
-		{
-			pthread_mutex_unlock(&philo->info->death_mutex);
 			break ;
-		}
-		pthread_mutex_unlock(&philo->info->death_mutex);
-		pthread_mutex_lock(&philo->info->death_mutex);
 		if (!check_one_philo(philo, time))
 			return (NULL);
-		pthread_mutex_unlock(&philo->info->death_mutex);
 		if (!routine_2(philo, time))
 			break ;
 	}
-	pthread_mutex_lock(&philo->info->death_mutex);
+	//pthread_mutex_lock(&philo->info->death_mutex);
 	print_died(philo, time);
-	pthread_mutex_unlock(&philo->info->death_mutex);
+	//pthread_mutex_unlock(&philo->info->death_mutex);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 10:36:19 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/05/14 12:24:08 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/12 17:47:39 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ t_bool	check_one_philo(t_philo *philo, long time)
 {
 	if (philo->info->num_of_philo == 1)
 	{
-		pthread_mutex_unlock(&philo->info->death_mutex);
 		pthread_mutex_lock(&philo->fork->fork);
 		safe_printf("has taken a fork", &philo->info->printf_mutex, time - time,
 			philo->id);
@@ -62,24 +61,19 @@ t_bool	check_death(t_philo *philo)
  * @return: true if the philo died, false otherwise.
  */
 {
-	long	time;
+	_Atomic long	time;
 
-	pthread_mutex_lock(&philo->info->simulation_mutex);
 	time = get_time_in_ms();
 	if (philo->last_meal == 0)
 	{
-		pthread_mutex_unlock(&philo->info->simulation_mutex);
 		return (false);
 	}
 	if (time - philo->last_meal >= philo->info->time_to_die
-		|| philo->state == died || philo->info->simulation_over == true)
+		|| philo->state == died)
 	{
 		philo->state = died;
-		//philo->info->simulation_over = true;
-		pthread_mutex_unlock(&philo->info->simulation_mutex);
 		return (true);
 	}
-	pthread_mutex_unlock(&philo->info->simulation_mutex);
 	return (false);
 }
 
@@ -90,19 +84,14 @@ t_bool	check_philo_state(t_philo *philo)
  * @return: true if the philo died or the simulation is over, false otherwise.
  */
 {
-	pthread_mutex_lock(&philo->info->death_mutex);
 	if ((philo->meals_eaten >= philo->info->num_of_meals
 			&& philo->info->num_of_meals != -1))
 	{
-		pthread_mutex_unlock(&philo->info->death_mutex);
 		return (true);
 	}
 	if (philo->state == died || philo->info->simulation_over == true)
 	{
-		//philo->info->simulation_over = true;
-		pthread_mutex_unlock(&philo->info->death_mutex);
 		return (true);
 	}
-	pthread_mutex_unlock(&philo->info->death_mutex);
 	return (false);
 }

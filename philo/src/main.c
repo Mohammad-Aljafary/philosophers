@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/05/14 13:39:16 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/12 17:54:35 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,14 @@ void	monitor(t_philo **philo, t_info *info)
 	while (1)
 	{
 		// Optionally protect this with a simulation_mutex
-		if (check_death(thread))
+		pthread_mutex_lock(&info->death_mutex);
+		if (check_if_died(thread))
 		{
-			pthread_mutex_lock(&info->monitor_mutex);
 			info->simulation_over = true;
-			pthread_mutex_unlock(&info->monitor_mutex);
+			pthread_mutex_unlock(&info->death_mutex);
 			break;
 		}
+		pthread_mutex_unlock(&info->death_mutex);
 
 		// Move to next philosopher or loop back
 		if (thread->next)

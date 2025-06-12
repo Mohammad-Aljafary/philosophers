@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/05/14 12:28:29 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/12 17:49:31 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
+#include <stdatomic.h>
 
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
@@ -42,12 +43,12 @@ typedef enum e_state
 
 typedef struct s_info
 {
-	int				num_of_philo;
-	long			time_to_eat;
-	long			time_to_sleep;
-	long			time_to_die;
-	int				num_of_meals;
-	int				simulation_over;
+	_Atomic int				num_of_philo;
+	_Atomic long			time_to_eat;
+	_Atomic long			time_to_sleep;
+	_Atomic long			time_to_die;
+	_Atomic int				num_of_meals;
+	_Atomic int				simulation_over;
 	t_bool			flag;
 	pthread_mutex_t	printf_mutex;
 	pthread_mutex_t	death_mutex;
@@ -63,15 +64,15 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	pthread_t		philo;
-	int				state;
+	_Atomic int				state;
 	int				id;
 	struct s_philo	*next;
 	struct s_philo	*prev;
 	char			**argv;
 	t_fork			*fork;
 	t_info			*info;
-	long			last_meal;
-	int				meals_eaten;
+	_Atomic long			last_meal;
+	_Atomic int		meals_eaten;
 	pthread_mutex_t	lock;
 }					t_philo;
 
