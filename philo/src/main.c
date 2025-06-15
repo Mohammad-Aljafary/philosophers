@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/12 17:54:35 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/15 20:14:30 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,13 @@ t_bool	handle_input(char **argv, int argc, t_info *info)
 	return (true);
 }
 
-t_bool	check_if_died(t_philo *philo)
+/* t_bool	check_if_died(t_philo *philo)
 {
-	if (philo->state == died)
+	if (philo->state == died || (philo->meals_eaten >= philo->info->num_of_meals
+			&& philo->info->num_of_meals != -1))
 		return (1);
 	return (0);
-}
+} */
 
 void	monitor(t_philo **philo, t_info *info)
 {
@@ -78,23 +79,14 @@ void	monitor(t_philo **philo, t_info *info)
 
 	while (1)
 	{
-		// Optionally protect this with a simulation_mutex
 		pthread_mutex_lock(&info->death_mutex);
-		if (check_if_died(thread))
+		if (check_philo_state(thread))
 		{
 			info->simulation_over = true;
 			pthread_mutex_unlock(&info->death_mutex);
 			break;
 		}
 		pthread_mutex_unlock(&info->death_mutex);
-
-		// Move to next philosopher or loop back
-		if (thread->next)
-			thread = thread->next;
-		else
-			thread = *philo;
-
-		usleep(1000); // prevent busy waiting
 	}
 }
 

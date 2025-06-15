@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/12 17:51:29 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/15 19:37:49 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_died(t_philo *philo, long time)
  * print_died - Prints the died message.
  */
 {
-	static _Atomic  int	printt = 0;
+	static int	printt = 0;
 
 	if (philo->state == died && printt == 0)
 	{
@@ -89,8 +89,8 @@ void	*routine(void *arg)
 		if (!routine_2(philo, time))
 			break ;
 	}
-	//pthread_mutex_lock(&philo->info->death_mutex);
+	pthread_mutex_lock(&philo->info->death_mutex);
 	print_died(philo, time);
-	//pthread_mutex_unlock(&philo->info->death_mutex);
+	pthread_mutex_unlock(&philo->info->death_mutex);
 	return (NULL);
 }

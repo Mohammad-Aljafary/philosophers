@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 10:36:19 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/12 17:47:39 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/15 20:17:07 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,14 @@ t_bool	check_one_philo(t_philo *philo, long time)
 		pthread_mutex_lock(&philo->fork->fork);
 		safe_printf("has taken a fork", &philo->info->printf_mutex, time - time,
 			philo->id);
-		ft_usleep(philo->info->time_to_die);
+		if (!ft_usleep(philo->info->time_to_die, philo))
+		{
+			pthread_mutex_unlock(&philo->fork->fork);
+			return (false);
+		}
 		safe_printf("died", &philo->info->printf_mutex, get_time_in_ms() - time,
 			philo->id);
+		philo->state = died;
 		pthread_mutex_unlock(&philo->fork->fork);
 		return (false);
 	}
@@ -69,8 +74,9 @@ t_bool	check_death(t_philo *philo)
 		return (false);
 	}
 	if (time - philo->last_meal >= philo->info->time_to_die
-		|| philo->state == died)
+		|| philo->state == died || philo->info->simulation_over == true)
 	{
+		change_statement(philo);
 		philo->state = died;
 		return (true);
 	}
@@ -85,11 +91,8 @@ t_bool	check_philo_state(t_philo *philo)
  */
 {
 	if ((philo->meals_eaten >= philo->info->num_of_meals
-			&& philo->info->num_of_meals != -1))
-	{
-		return (true);
-	}
-	if (philo->state == died || philo->info->simulation_over == true)
+			&& philo->info->num_of_meals != -1) || philo->state == died 
+			|| philo->info->simulation_over == true)
 	{
 		return (true);
 	}

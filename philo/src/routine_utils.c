@@ -6,13 +6,13 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 12:26:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/12 17:53:56 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/15 19:56:31 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-void	ft_usleep(long long time_in_ms)
+int	ft_usleep(long long time_in_ms, t_philo *philo)
 /**
  * ft_usleep - Sleeps for a given amount of time.
  * @time_in_ms: The time to sleep in milliseconds.
@@ -22,7 +22,12 @@ void	ft_usleep(long long time_in_ms)
 
 	start_time = get_time_in_ms();
 	while ((get_time_in_ms() - start_time) < time_in_ms)
+	{
+		if (check_philo_state(philo))
+			return (false);
 		usleep(5);
+	}
+	return (true);
 }
 
 t_bool	eating_thread(t_philo *philo, long simulation_time)
@@ -37,7 +42,9 @@ t_bool	eating_thread(t_philo *philo, long simulation_time)
 
 	time = get_time_in_ms();
 	pthread_mutex_lock(&philo->info->death_mutex);
-	if (check_death(philo) || philo->info->simulation_over == true)
+	if (check_death(philo) ||
+		(philo->meals_eaten >= philo->info->num_of_meals
+			&& philo->info->num_of_meals != -1))
 	{
 		pthread_mutex_unlock(&philo->info->death_mutex);
 		return (false);
@@ -47,7 +54,8 @@ t_bool	eating_thread(t_philo *philo, long simulation_time)
 		philo->id);
 	philo->last_meal = time;
 	philo->meals_eaten++;
-	ft_usleep(philo->info->time_to_eat);
+	if (!ft_usleep(philo->info->time_to_eat, philo))
+		return (false);
 	return (true);
 }
 
@@ -67,7 +75,8 @@ t_bool	sleeping_thread(t_philo *philo, long simulation_time)
 	philo->state = sleeping;
 	safe_printf("is sleeping", &philo->info->printf_mutex, time
 		- simulation_time, philo->id);
-	ft_usleep(philo->info->time_to_sleep);
+	if (!ft_usleep(philo->info->time_to_sleep, philo))
+		return (false);
 	return (true);
 }
 
@@ -87,6 +96,7 @@ t_bool	thinking_thread(t_philo *philo, long simulation_time)
 	philo->state = thinking;
 	safe_printf("is thinking", &philo->info->printf_mutex, time
 		- simulation_time, philo->id);
-	ft_usleep(200);
+	if (!ft_usleep(200, philo))
+		return (false);
 	return (true);
 }

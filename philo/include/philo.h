@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/12 17:49:31 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/15 19:56:39 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,6 @@ t_bool				take_fork(t_philo *philo, t_fork *fork,
 void				release_forks(t_philo *philo);
 int					creating_threads(t_info *info, t_philo **threads);
 void				join_threads(t_info *info, t_philo **thread);
-void				ft_usleep(long long time_in_ms);
+int				ft_usleep(long long time_in_ms, t_philo *philo);
 t_bool				check_one_philo(t_philo *philo, long time);
 #endif
