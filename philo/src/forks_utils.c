@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 08:15:43 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/15 19:33:37 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/18 14:04:27 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ t_bool	take_fork(t_philo *philo, t_fork *fork, long simulation_time)
 	time = get_time_in_ms();
 	pthread_mutex_lock(&fork->fork);
 	pthread_mutex_lock(&philo->info->death_mutex);
-	if (check_death(philo) || (philo->meals_eaten >= philo->info->num_of_meals
-			&& philo->info->num_of_meals != -1))
+	if (check_death(philo) || check_philo_state(philo))
 	{
 		pthread_mutex_unlock(&philo->info->death_mutex);
 		pthread_mutex_unlock(&fork->fork);
