@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
+/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 12:26:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/18 14:03:17 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/24 14:44:44 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ int	ft_usleep(long long time_in_ms, t_philo *philo)
 {
 	long long	start_time;
 
+	(void)philo;
 	start_time = get_time_in_ms();
 	while ((get_time_in_ms() - start_time) < time_in_ms)
 	{
 		if (check_death(philo))
 			return (false);
-		usleep(5);
+		usleep(1);
 	}
 	return (true);
 }
@@ -90,7 +91,10 @@ t_bool	thinking_thread(t_philo *philo, long simulation_time)
 
 	time = get_time_in_ms();
 	if (check_philo_state(philo))
+	{
+		printf("test4\n");
 		return (false);
+	}
 	philo->state = thinking;
 	safe_printf("is thinking", &philo->info->printf_mutex, time
 		- simulation_time, philo->id);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
+/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/15 19:37:49 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/24 18:13:29 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ t_bool	routine_2(t_philo *philo, long time)
 {
 	if (check_philo_state(philo))
 		return (false);
-	if (!thinking_thread(philo, time))
-		return (false);
 	if (!acquire_forks(philo, time))
 		return (false);
 	if (!eating_thread(philo, time))
@@ -64,6 +62,8 @@ t_bool	routine_2(t_philo *philo, long time)
 	}
 	release_forks(philo);
 	if (!sleeping_thread(philo, time))
+		return (false);
+	if (!thinking_thread(philo, time))
 		return (false);
 	return (true);
 }
@@ -76,16 +76,16 @@ void	*routine(void *arg)
  */
 {
 	t_philo			*philo;
-	_Atomic long	time;
+	 long	time;
 
 	philo = (t_philo *)arg;
 	time = get_time_in_ms();
+	if (!check_one_philo(philo, time))
+		return (NULL);
 	while (1)
 	{
 		if (philo->info->simulation_over)
 			break ;
-		if (!check_one_philo(philo, time))
-			return (NULL);
 		if (!routine_2(philo, time))
 			break ;
 	}

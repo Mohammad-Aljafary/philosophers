@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
+/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 10:36:19 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/15 20:17:07 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/24 14:33:49 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,13 @@ t_bool	check_death(t_philo *philo)
  * @return: true if the philo died, false otherwise.
  */
 {
-	_Atomic long	time;
+	long	time;
 
 	time = get_time_in_ms();
 	if (philo->last_meal == 0)
-	{
 		return (false);
-	}
-	if (time - philo->last_meal >= philo->info->time_to_die
-		|| philo->state == died || philo->info->simulation_over == true)
+	if (time - philo->last_meal >= philo->info->time_to_die || philo->state == died)
 	{
-		change_statement(philo);
 		philo->state = died;
 		return (true);
 	}
@@ -91,8 +87,8 @@ t_bool	check_philo_state(t_philo *philo)
  */
 {
 	if ((philo->meals_eaten >= philo->info->num_of_meals
-			&& philo->info->num_of_meals != -1) || philo->state == died 
-			|| philo->info->simulation_over == true)
+			&& philo->info->num_of_meals != -1)
+			|| philo->info->simulation_over == true || philo->state == died)
 	{
 		return (true);
 	}
