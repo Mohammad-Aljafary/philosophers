@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 10:36:19 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 10:22:32 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/25 14:31:14 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ t_bool	check_death(t_philo *philo)
 	{
 		return (FALSE);
 	}
-	if ((time - philo->last_meal >= philo->info->time_to_die 
-		&& philo->info->num_of_meals != 1) || philo->state == DIED)
+	if (time - philo->last_meal >= philo->info->time_to_die 
+		|| philo->state == DIED
+		|| philo->info->simulation_over == TRUE)
 	{
 		philo->state = DIED;
 		return (TRUE);

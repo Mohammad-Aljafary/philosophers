@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 08:15:43 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 09:25:53 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/25 14:23:02 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ t_bool	take_fork(t_philo *philo, pthread_mutex_t *fork, long simulation_time)
 
  */
 {
-	long	time;
-
-	time = get_time_in_ms();
+	ft_usleep(1, philo);
 	pthread_mutex_lock(&philo->info->death_mutex);
 	if (check_death(philo) || check_philo_state(philo))
 	{
@@ -33,8 +31,7 @@ t_bool	take_fork(t_philo *philo, pthread_mutex_t *fork, long simulation_time)
 	}
 	pthread_mutex_unlock(&philo->info->death_mutex);
 	pthread_mutex_lock(fork);
-	safe_printf("has taken a fork", &philo->info->printf_mutex, time
-		- simulation_time, philo->id);
+	safe_printf("has taken a fork", &philo->info->printf_mutex , simulation_time, philo->id);
 	return (TRUE);
 }
 

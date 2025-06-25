@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 10:22:10 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/25 14:44:34 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_bool	handle_minus(t_info *info, char **argv)
 	info->time_to_eat = parse_atoi(argv[3]);
 	info->time_to_sleep = parse_atoi(argv[4]);
 	info->simulation_over = FALSE;
+	info->start_time = get_time_in_ms();
 	if (info->num_of_philo <= 0 || info->time_to_die <= 0
 		|| info->time_to_eat <= 0 || info->time_to_sleep <= 0
 		|| (info->flag == TRUE && info->num_of_meals <= 0))

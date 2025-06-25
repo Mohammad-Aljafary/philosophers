@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:59:41 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 08:29:19 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/25 14:44:00 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,23 @@ void	join_threads(t_info *info, t_philo **philos)
 	while (i < info->num_of_philo)
 	{
 		pthread_join((*philos)[i].philo, NULL);
+		i++;
+	}
+	free (*philos);
+}
+
+void change_statement(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->info->num_of_philo)
+	{
+		if (philo[i].state != DIED)
+		{
+			philo[i].state = DIED;
+		}
+		philo[i].info->simulation_over = TRUE;
 		i++;
 	}
 }

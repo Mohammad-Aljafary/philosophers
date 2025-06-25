@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 09:29:05 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/25 13:16:32 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	safe_printf(const char *msg, pthread_mutex_t *printf_mutex,
  */
 {
 	pthread_mutex_lock(printf_mutex);
-	printf("%s%ld %s%d %s%s\n%s", YELLOW, current_time, GREEN, id, RED, msg,
+	printf("%s%ld %s%d %s%s\n%s", YELLOW, get_time_in_ms() - current_time, GREEN, id, RED, msg,
 		RESET);
 	pthread_mutex_unlock(printf_mutex);
 }
@@ -56,8 +56,7 @@ void	print_died(t_philo *philo, long time)
 
 	if (philo->state == DIED && printt == 0)
 	{
-		safe_printf("died", &philo->info->printf_mutex, get_time_in_ms()
-			- time, philo->id);
+		safe_printf("died", &philo->info->printf_mutex, time, philo->id);
 		printt = 1;
 	}
 }
@@ -94,19 +93,17 @@ void	*routine(void *arg)
  */
 {
 	t_philo	*philo;
-	long	time;
 
 	philo = (t_philo *)arg;
-	time = get_time_in_ms();
-	if (!check_one_philo(philo, time))
+	if (!check_one_philo(philo, philo->info->start_time))
 		return (NULL);
  	while (1)
 	{
-		if (!routine_2(philo, time))
+		if (!routine_2(philo, philo->info->start_time))
 			break ;
 	}
 	pthread_mutex_lock(&philo->info->death_mutex);
-	print_died(philo, time);
+	print_died(philo, philo->info->start_time);
 	pthread_mutex_unlock(&philo->info->death_mutex);
 	return (NULL);
 }

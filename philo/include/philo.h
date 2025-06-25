@@ -6,7 +6,7 @@
 /*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 10:24:45 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/25 12:32:25 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_info
 	_Atomic int				num_of_meals;
 	_Atomic int				simulation_over;
 	int				flag;
+	long			start_time;
 	pthread_mutex_t	printf_mutex;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	*fork;
