@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
+/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 12:32:25 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/25 15:43:07 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_philo
 	pthread_t		philo;
 	t_info			*info;
 	int				id;
+	long			death_time;
 	pthread_mutex_t	*lfork;
 	pthread_mutex_t	*rfork;
 }					t_philo;
@@ -72,7 +73,7 @@ typedef struct s_philo
 long long			parse_atoi(char *str);
 void				*routine(void *arg);
 void				safe_printf(const char *msg, pthread_mutex_t *printf_mutex,
-						long current_time, int id);
+						long current_time, t_philo *philo);
 long				get_time_in_ms(void);
 t_bool				check_death(t_philo *philo);
 t_bool				check_philo_state(t_philo *philo);

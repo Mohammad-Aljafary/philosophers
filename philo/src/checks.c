@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
+/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 10:36:19 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 14:31:14 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/25 18:08:44 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,9 @@ t_bool	check_one_philo(t_philo *philo, long time)
 	if (philo->info->num_of_philo == 1)
 	{
 		pthread_mutex_lock(philo->lfork);
-		safe_printf("has taken a fork", &philo->info->printf_mutex, time - time,
-			philo->id);
-		if (!ft_usleep(philo->info->time_to_die, philo))
-		{
-			pthread_mutex_unlock(philo->lfork);
-			return (FALSE);
-		}
-		safe_printf("died", &philo->info->printf_mutex, get_time_in_ms() - time,
-			philo->id);
+		safe_printf("has taken a fork", &philo->info->printf_mutex, time,
+			philo);
+		ft_usleep(philo->info->time_to_die * 10, philo);
 		philo->state = DIED;
 		pthread_mutex_unlock(philo->lfork);
 		return (FALSE);
@@ -49,13 +43,7 @@ t_bool	check_death(t_philo *philo)
 	long	time;
 
 	time = get_time_in_ms();
-	if (philo->last_meal == 0)
-	{
-		return (FALSE);
-	}
-	if (time - philo->last_meal >= philo->info->time_to_die 
-		|| philo->state == DIED
-		|| philo->info->simulation_over == TRUE)
+	if (time - philo->last_meal > philo->info->time_to_die || philo->state == DIED)
 	{
 		philo->state = DIED;
 		return (TRUE);

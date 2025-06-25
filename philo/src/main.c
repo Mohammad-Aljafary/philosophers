@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
+/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 14:44:34 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/25 19:04:10 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,9 @@ int	main(int argc, char **argv)
 		free(info);
 		return (1);
 	}
-	if (!init_forks(info))
+	if (!init_forks(info) || !init_philos(info, &philos))
 	{
-		write(2, "Error: Failed to initialize forks\n", 35);
-		destroy_info(info);
-		return (1);
-	}
-	if (!init_philos(info, &philos))
-	{
-		write(2, "Error: Failed to initialize philosophers\n", 42);
+		write(2, "Error: Failed to initialize forks or philos\n", 45);
 		destroy_info(info);
 		return (1);
 	}

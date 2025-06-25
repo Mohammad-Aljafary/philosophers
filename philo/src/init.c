@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
+/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 13:30:17 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 13:03:15 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/25 19:01:49 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+
+t_bool	create_thread(t_info *info, t_philo **philos)
+{
+	int	i;
+
+	i = -1;
+	while (++i < info->num_of_philo)
+	{
+		if (pthread_create(&(*philos)[i].philo, NULL, routine, &(*philos)[i]))
+		{
+			while (--i >= 0)
+				pthread_join((*philos)[i].philo, NULL);
+			free(*philos);
+			return (FALSE);
+		}
+	}
+	return (TRUE);
+}
 
 t_bool	init_philos(t_info *info, t_philo **philos)
 {
@@ -25,25 +43,17 @@ t_bool	init_philos(t_info *info, t_philo **philos)
 		(*philos)[i].state = NORM;
 		(*philos)[i].id = i + 1;
 		(*philos)[i].info = info;
-		(*philos)[i].last_meal = 0;
+		(*philos)[i].last_meal = get_time_in_ms();
 		(*philos)[i].meals_eaten = 0;
 		(*philos)[i].lfork = &info->fork[i];
 		if (i == info->num_of_philo - 1)
 			(*philos)[i].rfork = &info->fork[0];
 		else
 			(*philos)[i].rfork = &info->fork[i + 1];
+		(*philos)[i].death_time = 0;
 	}
-	i = -1;
-	while (++i < info->num_of_philo)
-	{
-		if (pthread_create(&(*philos)[i].philo, NULL, routine, &(*philos)[i]))
-		{
-			while (--i >= 0)
-				pthread_join((*philos)[i].philo, NULL);
-			free(*philos);
-			return (FALSE);
-		}
-	}
+	if (!create_thread(info, philos))
+		return (FALSE);
 	return (TRUE);
 }
 
