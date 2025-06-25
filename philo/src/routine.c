@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/24 18:13:29 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/06/25 09:29:05 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+
+int	ft_usleep(long long time_in_ms, t_philo *philo)
+/**
+ * ft_usleep - Sleeps for a given amount of time.
+ * @time_in_ms: The time to sleep in milliseconds.
+ */
+{
+	long long	start_time;
+
+	(void)philo;
+	start_time = get_time_in_ms();
+	while ((get_time_in_ms() - start_time) < time_in_ms)
+	{
+		if (check_death(philo))
+			return (FALSE);
+		usleep(1);
+	}
+	return (TRUE);
+}
 
 void	safe_printf(const char *msg, pthread_mutex_t *printf_mutex,
 		long current_time, int id)
@@ -35,7 +54,7 @@ void	print_died(t_philo *philo, long time)
 {
 	static int	printt = 0;
 
-	if (philo->state == died && printt == 0)
+	if (philo->state == DIED && printt == 0)
 	{
 		safe_printf("died", &philo->info->printf_mutex, get_time_in_ms()
 			- time, philo->id);
@@ -43,29 +62,28 @@ void	print_died(t_philo *philo, long time)
 	}
 }
 
-t_bool	routine_2(t_philo *philo, long time)
-/**
+ t_bool	routine_2(t_philo *philo, long time)
+ /*
  * routine_2 - The routine of the philo.
  * @philo: The philo to run the routine.
  * @time: The time when the simulation started.
- * @return: true if the philo finished the routine, false otherwise.
- */
+ * @return: true if the philo finished the routine, false otherwise.*/
 {
 	if (check_philo_state(philo))
-		return (false);
+		return (FALSE);
 	if (!acquire_forks(philo, time))
-		return (false);
+		return (FALSE);
 	if (!eating_thread(philo, time))
 	{
 		release_forks(philo);
-		return (false);
+		return (FALSE);
 	}
 	release_forks(philo);
 	if (!sleeping_thread(philo, time))
-		return (false);
+		return (FALSE);
 	if (!thinking_thread(philo, time))
-		return (false);
-	return (true);
+		return (FALSE);
+	return (TRUE);
 }
 
 void	*routine(void *arg)
@@ -75,17 +93,15 @@ void	*routine(void *arg)
  * @return: NULL.
  */
 {
-	t_philo			*philo;
-	 long	time;
+	t_philo	*philo;
+	long	time;
 
 	philo = (t_philo *)arg;
 	time = get_time_in_ms();
 	if (!check_one_philo(philo, time))
 		return (NULL);
-	while (1)
+ 	while (1)
 	{
-		if (philo->info->simulation_over)
-			break ;
 		if (!routine_2(philo, time))
 			break ;
 	}

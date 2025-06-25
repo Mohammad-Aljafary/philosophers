@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:54:23 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/24 20:57:13 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/06/25 10:22:10 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	main(int argc, char **argv)
 {
 	t_info	*info;
 	t_philo	*philos;
+	pthread_t	monitor;
 
 	philos = NULL;
 	info = malloc(sizeof(t_info));
@@ -84,9 +85,27 @@ int	main(int argc, char **argv)
 		free(info);
 		return (1);
 	}
-	if (!init_philos(info, philos))
+	if (!init_forks(info))
 	{
-		
+		write(2, "Error: Failed to initialize forks\n", 35);
+		destroy_info(info);
+		return (1);
 	}
+	if (!init_philos(info, &philos))
+	{
+		write(2, "Error: Failed to initialize philosophers\n", 42);
+		destroy_info(info);
+		return (1);
+	}
+	if (pthread_create(&monitor, NULL, monitor_routine, philos) != 0)
+	{
+		write(2, "Error: Failed to create monitor thread\n", 40);
+		join_threads(info, &philos);
+		destroy_info(info);
+		return (1);
+	}
+	join_threads(info, &philos);
+	pthread_join(monitor, NULL);
+	destroy_info(info);
 	return (0);
 }

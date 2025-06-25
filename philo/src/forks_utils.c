@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   forks_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 08:15:43 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/24 18:10:56 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/06/25 09:25:53 by mohammad-bo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-t_bool	take_fork(t_philo *philo, t_fork *fork, long simulation_time)
+t_bool	take_fork(t_philo *philo, pthread_mutex_t *fork, long simulation_time)
 /**
  * take_fork - Tries to take a fork.
  * @philo: The philo that wants to take the fork.
@@ -29,13 +29,13 @@ t_bool	take_fork(t_philo *philo, t_fork *fork, long simulation_time)
 	if (check_death(philo) || check_philo_state(philo))
 	{
 		pthread_mutex_unlock(&philo->info->death_mutex);
-		return (false);
+		return (FALSE);
 	}
 	pthread_mutex_unlock(&philo->info->death_mutex);
-	pthread_mutex_lock(&fork->fork);
+	pthread_mutex_lock(fork);
 	safe_printf("has taken a fork", &philo->info->printf_mutex, time
 		- simulation_time, philo->id);
-	return (true);
+	return (TRUE);
 }
 
 t_bool	acquire_forks(t_philo *philo, long simulation_time)
@@ -46,27 +46,27 @@ t_bool	acquire_forks(t_philo *philo, long simulation_time)
  * @return: true if the forks were acquired, false otherwise.
  */
 {
-	t_fork	*first_fork;
-	t_fork	*second_fork;
-
+	pthread_mutex_t	*first_fork;
+	pthread_mutex_t	*second_fork;
+	
 	if (philo->id % 2 == 0)
 	{
-		first_fork = philo->fork;
-		second_fork = philo->prev->fork;
+		first_fork = philo->lfork;
+		second_fork = philo->rfork;
 	}
 	else
 	{
-		first_fork = philo->prev->fork;
-		second_fork = philo->fork;
+		first_fork = philo->rfork;
+		second_fork = philo->lfork;
 	}
 	if (!take_fork(philo, first_fork, simulation_time))
-		return (false);
+		return (FALSE);
 	if (!take_fork(philo, second_fork, simulation_time))
 	{
-		pthread_mutex_unlock(&first_fork->fork);
-		return (false);
+		pthread_mutex_unlock(first_fork);
+		return (FALSE);
 	}
-	return (true);
+	return (TRUE);
 }
 
 void	release_forks(t_philo *philo)
@@ -75,19 +75,19 @@ void	release_forks(t_philo *philo)
  * @philo: The philo that wants to release the forks.
  */
 {
-	t_fork	*first_fork;
-	t_fork	*second_fork;
+	pthread_mutex_t	*first_fork;
+	pthread_mutex_t	*second_fork;
 
 	if (philo->id % 2 == 0)
 	{
-		first_fork = philo->fork;
-		second_fork = philo->prev->fork;
+		first_fork = philo->lfork;
+		second_fork = philo->rfork;
 	}
 	else
 	{
-		first_fork = philo->prev->fork;
-		second_fork = philo->fork;
+		first_fork = philo->rfork;
+		second_fork = philo->lfork;
 	}
-	pthread_mutex_unlock(&first_fork->fork);
-	pthread_mutex_unlock(&second_fork->fork);
+	pthread_mutex_unlock(first_fork);
+	pthread_mutex_unlock(second_fork);
 }
