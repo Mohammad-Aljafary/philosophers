@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:12:06 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 17:32:10 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:38:01 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,16 @@ void	safe_printf(const char *msg, pthread_mutex_t *printf_mutex,
 {
 	pthread_mutex_lock(&philo->info->death_mutex);
 	pthread_mutex_lock(printf_mutex);
-	if ((!check_death(philo) && !check_philo_state(philo)) || !strcmp("died", msg))
-		printf("%s%ld %s%d %s%s\n%s", YELLOW, get_time_in_ms() - current_time, GREEN, philo->id, RED, msg,
-			RESET);
+	if ((!check_death(philo) && !check_philo_state(philo)) || !strcmp("died",
+			msg))
+		printf("%s%ld %s%d %s%s\n%s", YELLOW, get_time_in_ms() - current_time,
+			GREEN, philo->id, RED, msg, RESET);
 	pthread_mutex_unlock(printf_mutex);
 	pthread_mutex_unlock(&philo->info->death_mutex);
 }
 
- t_bool	routine_2(t_philo *philo, long time)
- /*
+t_bool	routine_2(t_philo *philo, long time)
+/*
  * routine_2 - The routine of the philo.
  * @philo: The philo to run the routine.
  * @time: The time when the simulation started.
@@ -85,7 +86,7 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (!check_one_philo(philo, philo->info->start_time))
 		return (NULL);
- 	while (1)
+	while (1)
 	{
 		if (!routine_2(philo, philo->info->start_time))
 			break ;

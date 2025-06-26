@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad-boom <mohammad-boom@student.42    +#+  +:+       +#+        */
+/*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:11:39 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 08:13:30 by mohammad-bo      ###   ########.fr       */
+/*   Updated: 2025/06/26 15:47:23 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ long long	parse_atoi(char *str)
 }
 
 long	get_time_in_ms(void)
+/**
+ * this func to get the current time 
+ * when it is called
+ */
 {
 	struct timeval	tv;
 

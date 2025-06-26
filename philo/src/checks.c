@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 10:36:19 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 18:08:44 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:37:50 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ t_bool	check_death(t_philo *philo)
 	long	time;
 
 	time = get_time_in_ms();
-	if (time - philo->last_meal > philo->info->time_to_die || philo->state == DIED)
+	if (time - philo->last_meal > philo->info->time_to_die
+		|| philo->state == DIED)
 	{
 		philo->state = DIED;
 		return (TRUE);
@@ -60,7 +61,7 @@ t_bool	check_philo_state(t_philo *philo)
 {
 	if ((philo->meals_eaten >= philo->info->num_of_meals
 			&& philo->info->num_of_meals != -1)
-			|| philo->info->simulation_over == TRUE || philo->state == DIED)
+		|| philo->info->simulation_over == TRUE || philo->state == DIED)
 	{
 		return (TRUE);
 	}

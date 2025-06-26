@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 08:15:43 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 15:19:43 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:39:11 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ t_bool	take_fork(t_philo *philo, pthread_mutex_t *fork, long simulation_time)
  * @fork: The fork to take.
  * @simulation_time: The time when the simulation started.
  * @return: true if the fork was taken, false otherwise.
-
  */
 {
 	pthread_mutex_lock(&philo->info->death_mutex);
@@ -30,7 +29,8 @@ t_bool	take_fork(t_philo *philo, pthread_mutex_t *fork, long simulation_time)
 	}
 	pthread_mutex_unlock(&philo->info->death_mutex);
 	pthread_mutex_lock(fork);
-	safe_printf("has taken a fork", &philo->info->printf_mutex , simulation_time, philo);
+	safe_printf("has taken a fork", &philo->info->printf_mutex, simulation_time,
+		philo);
 	return (TRUE);
 }
 
@@ -44,7 +44,7 @@ t_bool	acquire_forks(t_philo *philo, long simulation_time)
 {
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;
-	
+
 	if (philo->id % 2 == 0)
 	{
 		first_fork = philo->lfork;

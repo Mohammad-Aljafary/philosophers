@@ -6,7 +6,7 @@
 /*   By: malja-fa <malja-fa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:55:28 by malja-fa          #+#    #+#             */
-/*   Updated: 2025/06/25 15:43:07 by malja-fa         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:45:17 by malja-fa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 # define PHILO_H
 
 # include <pthread.h>
+# include <stdatomic.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
-#include <stdatomic.h>
 
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
@@ -47,9 +47,9 @@ typedef struct s_info
 	int				num_of_philo;
 	long			time_to_eat;
 	long			time_to_sleep;
-	_Atomic long			time_to_die;
-	_Atomic int				num_of_meals;
-	_Atomic int				simulation_over;
+	_Atomic long	time_to_die;
+	_Atomic int		num_of_meals;
+	_Atomic int		simulation_over;
 	int				flag;
 	long			start_time;
 	pthread_mutex_t	printf_mutex;
@@ -59,13 +59,12 @@ typedef struct s_info
 
 typedef struct s_philo
 {
-	_Atomic int				state;
-	_Atomic long			last_meal;
-	_Atomic int				meals_eaten;
+	_Atomic int		state;
+	_Atomic long	last_meal;
+	_Atomic int		meals_eaten;
 	pthread_t		philo;
 	t_info			*info;
 	int				id;
-	long			death_time;
 	pthread_mutex_t	*lfork;
 	pthread_mutex_t	*rfork;
 }					t_philo;
@@ -89,6 +88,8 @@ int					ft_usleep(long long time_in_ms, t_philo *philo);
 t_bool				check_one_philo(t_philo *philo, long time);
 t_bool				init_philos(t_info *info, t_philo **philos);
 t_bool				init_forks(t_info *info);
-void    			*monitor_routine(void *philos);
+void				*monitor_routine(void *philos);
 void				destroy_info(t_info *info);
+t_bool				handle_minus(t_info *info, char **argv);
+t_bool				handle_input(char **argv, int argc, t_info *info);
 #endif
